@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Data ecosystem questionnaire</title>
+<style>
+/* One column, two views in one file: the 25 questions in five sections, then the result in their place. Light only. */
+:root{
+  --bg:#FFFFFF;
+  --panel:#FFFFFF;
+  --soft:#F5F7FA;
+  --ink:#1F2933;
+  --muted:#616E7C;
+  --line:#DDE2E8;
+  --accent:#1D4E89;
+  --accent-strong:#163D6B;
+  --accent-soft:#EAF1F9;
+  --on-accent:#FFFFFF;
+  --warn:#B44D12;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0;padding-block:2rem 6.5rem;padding-inline:1rem;
+  background:var(--bg);color:var(--ink);
+  font-family:var(--font);font-size:16px;line-height:1.6;
+}
+.wrap{max-width:780px;margin:0 auto}
+h1,h2,h3{font-weight:600;line-height:1.3;color:var(--ink)}
+h1{font-size:28px;margin:0 0 .8rem}
+h1:focus{outline:none}
+h2{font-size:20px;margin:0 0 .4rem}
+h3{font-size:16px;margin:1.2rem 0 .4rem}
+p{margin:0 0 .6rem}
+a{color:var(--accent)}
+.lede{margin:0 0 1.5rem}
+.lede p{color:var(--muted);max-width:68ch;margin:0 0 .7rem}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1.25rem 1.5rem 1.5rem;margin:0 0 1.25rem}
+.step{font-size:14px;color:var(--muted);margin:0 0 .2rem}
+.intro{color:var(--muted);font-size:15px;margin:0;max-width:70ch}
+.note{color:var(--muted);font-size:15px;max-width:72ch;margin:.4rem 0 0}
+.note b{color:var(--ink);font-weight:600}
+.notice{background:var(--soft);font-size:15px;padding:.8rem 1.1rem}
+.notice p{margin:0}
+
+/* The questions */
+fieldset.q{border:0;border-top:1px solid var(--line);margin:1.25rem 0 0;padding:1.25rem 0 0;min-width:0;scroll-margin-top:1rem}
+legend{float:left;width:100%;padding:0;font-size:16px;font-weight:600;line-height:1.45}
+.qn{color:var(--muted);font-weight:400;font-variant-numeric:tabular-nums;margin-right:.35rem}
+.hint{clear:both;font-size:13px;color:var(--muted);margin:0;padding:.2rem 0 .6rem}
+.need{display:none;color:var(--warn)}
+.q.missing .need{display:inline}
+.q.missing .opts{outline:2px solid var(--warn);outline-offset:4px;border-radius:6px}
+.q.go legend{color:var(--accent)}
+.opts{display:grid;gap:6px}
+.opt{display:grid;grid-template-columns:18px 1fr;gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:6px;cursor:pointer;font-size:15px;line-height:1.45}
+.opt>span{min-width:0}
+.opt:hover{background:var(--soft)}
+.opt:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.opt>input{margin:3px 0 0;width:16px;height:16px;accent-color:var(--accent)}
+.opt b{font-weight:600}
+.opt .ex{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.opt.ns{color:var(--muted)}
+.other-text{display:block;font:inherit;font-size:14px;width:100%;margin-top:6px;padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink)}
+.end p{margin:0 0 .8rem;max-width:70ch}
+.msg{font-size:15px;color:var(--warn);min-height:1.2em;margin:.8rem 0 0}
+.ask{font-size:15px;align-self:center;margin-right:4px}
+#example details{font-size:15px;margin-top:.6rem}
+#example details p{line-height:1.6}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);padding:.6rem 1rem calc(.6rem + env(safe-area-inset-bottom,0px));z-index:5}
+.bar .in{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.bar-btns{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.bar .count{font-size:14px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.track{flex:1;height:6px;background:var(--line);border-radius:3px;position:relative;min-width:40px}
+.fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:3px;width:0;transition:width .15s}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+
+/* Buttons */
+input:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:.8rem}
+button{font:inherit;font-size:15px;padding:8px 16px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);cursor:pointer}
+button:hover{background:var(--soft)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+button.primary:hover{background:var(--accent-strong);border-color:var(--accent-strong)}
+button.quiet{color:var(--muted)}
+button.danger{border-color:var(--warn);color:var(--warn)}
+
+/* The result */
+.leads{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:1.25rem}
+.lead{min-width:0}
+.lead h2{font-size:22px;margin-bottom:.5rem}
+.lead .desc{max-width:68ch;margin:0 0 .5rem}
+.lead .meta{font-size:14px;color:var(--muted);margin:0}
+figure{margin:0 0 .4rem}
+svg{width:100%;height:auto;display:block}
+.cell rect{fill:var(--panel);stroke:var(--line)}
+.cell.live rect{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.qt{font-family:var(--font);font-size:15px;font-weight:600;fill:var(--ink)}
+.qs{font-family:var(--font);font-size:12px;fill:var(--muted)}
+.ax{font-family:var(--font);font-size:12px;fill:var(--muted)}
+.dot{fill:var(--accent);stroke:var(--panel);stroke-width:2}
+figcaption{font-size:14px;color:var(--muted);margin-top:.3rem}
+.ranks{display:grid;gap:1.4rem;margin-top:1rem}
+.ranks.two{grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))}
+.ranks h3{margin-top:0}
+.ranks ol{margin:0;padding:0;list-style:none}
+.ranks li{display:grid;grid-template-columns:26px 1fr auto;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.ranks li:first-child{border-top:none}
+.ranks li>div{min-width:0}
+.ranks .p{font-size:17px;font-weight:600;color:var(--muted);line-height:1.4}
+.ranks .nm{font-size:16px;font-weight:600;margin:0 0 .2rem;line-height:1.4}
+.ranks .tie{font-size:12px;font-weight:400;color:var(--warn);margin-left:8px}
+.ranks .rs{font-size:14px;color:var(--muted);margin:0 0 .3rem}
+.ranks .d{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.ranks .d b{display:block;font-weight:600;font-size:17px;color:var(--ink)}
+details{font-size:14px}
+summary{cursor:pointer;color:var(--accent)}
+details p{margin:.35rem 0 0;max-width:68ch;color:var(--ink)}
+.axis{margin-top:.8rem}
+.score{display:flex;align-items:center;gap:12px;margin:.6rem 0 .2rem}
+.score small{color:var(--muted);font-size:13px;white-space:nowrap}
+.score b{font-weight:600;font-size:18px;font-variant-numeric:tabular-nums;min-width:3.2em;text-align:right}
+.pin{position:absolute;top:-5px;width:3px;height:16px;margin-left:-1px;background:var(--accent);border-radius:1px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px;margin:.6rem 0}
+th,td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-top:1px solid var(--line)}
+th{font-weight:600;font-size:13px;color:var(--muted);border-top:none}
+td.num{white-space:nowrap;font-variant-numeric:tabular-nums}
+tr.total td{border-top:2px solid var(--line);font-weight:600}
+.qref{color:var(--muted);font-variant-numeric:tabular-nums;margin-right:.3rem}
+ul.plain{margin:.2rem 0 0;padding-left:1.1rem;max-width:72ch}
+ul.plain li{margin:0 0 .35rem}
+dl{margin:0;display:grid;grid-template-columns:minmax(180px,2fr) 3fr;gap:0 16px;font-size:15px}
+dt,dd{margin:0;padding:6px 0;border-top:1px solid var(--line);min-width:0}
+dt{color:var(--muted)}
+.status{font-size:14px;color:var(--accent);min-height:1.2em;margin:.6rem 0 0}
+.copy-text{display:block;width:100%;min-height:11rem;margin-top:.5rem;padding:8px 10px;font:13px/1.45 ui-monospace,Consolas,"Courier New",monospace;border:1px solid var(--line);border-radius:4px;background:var(--soft);color:var(--ink);resize:vertical}
+footer{color:var(--muted);font-size:14px;max-width:72ch;margin-top:2rem}
+footer p{margin:0 0 .6rem}
+
+@media (max-width:560px){
+  body{padding-block:1.5rem 7rem}
+  h1{font-size:24px}
+  .card{padding:1rem 1rem 1.1rem}
+  .bar .in{gap:10px;justify-content:space-between}
+  .bar .track{display:none}
+  .bar button{padding:7px 11px;font-size:14px}
+  .bar .ask{font-size:14px}
+  dl{grid-template-columns:1fr}
+  dd{border-top:none;padding-top:0}
+  .qt{font-size:19px}
+  .qs,.ax{font-size:14px}
+}
+@media print{
+  body{padding:0}
+  .bar,.tools,.no-print{display:none}
+  .card{break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- View 1: the questionnaire -->
+<div id="view-form">
+
+<header class="lede">
+<h1>Data ecosystem questionnaire</h1>
+<p>This questionnaire helps you decide how to manage a data ecosystem project: a project in which data passes between actors, whether units of your own organization or separate organizations, and in which the conditions of that exchange still have to be settled, either for the first time or because an existing arrangement is under review. From your answers it ranks four management approaches for the project and explains the ranking.</p>
+<p>It is meant for the enterprise architect involved in the project, answering alone or with a few colleagues in one meeting. No knowledge of the management approaches or the names they go by is needed: every question asks about your own project, and every answer comes with an example. Answer for this specific project rather than for your organization as a whole and, where the arrangement already exists, for the project as it stands.</p>
+<p>There are 25 questions in five sections. Every question offers &ldquo;I am not sure / not decided yet&rdquo;. Please use it rather than guess: the method still returns a result and tells you which open questions would settle it. Your answers are not sent anywhere; the result is worked out in this browser and appears on this page once every question has an answer.</p>
+</header>
+
+<section class="card" id="example">
+  <p class="step">For a demonstration</p>
+  <h2>Example 1: a regional distribution hub</h2>
+  <p class="intro">Fill in the 25 answers given for a logistics project, to see how the questions and the result work before answering for a project of your own.</p>
+  <details>
+    <summary>Read the project</summary>
+    <p>A logistics service provider operates a regional distribution hub. Six independent subcontracted carriers deliver from it, each working for several other clients as well and each running its own transport management system: two of the six send files overnight, the others expose an interface of their own design. The hub intends to send each carrier its load plan and shipment status events during the day, and to receive vehicle positions and delivery confirmations in return, so that its planning system can reassign loads while the day is in progress. The planning platform is the hub&rsquo;s own and has been in operation for several years. The carriers&rsquo; data is copied into it and used for other planning purposes as well, among them capacity forecasting and the annual carrier review. The hub sets the retention period, decides which of its own departments may see the data, and administers access to it; each carrier has signed a clause in its haulage contract that permits this. In return the carriers receive their load plans earlier and wait less at the dock, and no money changes hands. The project connects systems that already exist and creates no new roles or decision-making bodies, although the hub and the carriers have not yet agreed who carries the cost when a position is wrong or arrives late.</p>
+  </details>
+  <div class="tools">
+    <button type="button" id="ex-fill">Fill in Example 1</button>
+  </div>
+  <div class="tools" id="ex-ask" hidden>
+    <span class="ask">This replaces the answers you have given so far.</span>
+    <button type="button" class="danger" id="ex-yes">Replace them</button>
+    <button type="button" class="quiet" id="ex-no">Keep my answers</button>
+  </div>
+  <p class="status" id="ex-status" role="status" aria-live="polite"></p>
+</section>
+
+<section class="card notice" id="restored" hidden>
+  <p>The answers you gave earlier on this device have been restored. Use &ldquo;Clear all answers&rdquo; at the end of the page to start again.</p>
+</section>
+
+<form id="form" novalidate></form>
+
+<section class="card end">
+  <p>When every question has an answer, the result takes the place of the questions on this page. You can go back from there to change any answer.</p>
+  <div class="tools">
+    <button type="button" class="primary" id="submit-end">See the result</button>
+    <button type="button" class="quiet" id="clear">Clear all answers</button>
+  </div>
+  <div class="tools" id="clear-ask" hidden>
+    <span class="ask">Clear all 25 answers and start again?</span>
+    <button type="button" class="danger" id="clear-yes">Yes, clear them</button>
+    <button type="button" class="quiet" id="clear-no">Keep my answers</button>
+  </div>
+  <p class="msg" id="msg" role="status" aria-live="polite"></p>
+</section>
+
+<footer>
+<p>This questionnaire is the first component of a decision support method developed in a master&rsquo;s thesis at the University of Twente. Its questions are drawn from published taxonomies of data sharing practices, data ecosystems and incentive mechanisms, a data governance framework, and a study of contextual complexity.</p>
+</footer>
+
+</div>
+
+<!-- View 2: the result -->
+<div id="view-result" hidden>
+
+<header class="lede">
+<h1 id="result-title" tabindex="-1">Your result</h1>
+<p>The four management approaches, ranked for the project you described, nearest first, with the reasons. Each approach is named by where it stands on the two things the ranking turns on: whether the data stays inside one organization or is shared between organizations (the application area), and who sets the rules for the shared data and keeps control over it (the governance mode).</p>
+</header>
+
+<section class="card notice" id="ex-note" hidden>
+  <p>This result is for Example 1, the regional distribution hub. To answer for a project of your own, go back to the questions and use &ldquo;Clear all answers&rdquo;.</p>
+</section>
+
+<section class="card">
+  <div class="leads" id="leads"></div>
+</section>
+
+<section class="card">
+  <p class="step">The ranking</p>
+  <h2>All four approaches</h2>
+  <figure>
+    <svg viewBox="0 0 600 300" role="img" aria-labelledby="m-title m-desc">
+      <title id="m-title">The four management approaches on two axes</title>
+      <desc id="m-desc">Governance mode in the rows, centralized above and federated below; application area in the columns, intra-organizational on the left and inter-organizational on the right. A dot marks the position of the project.</desc>
+      <g class="cell" id="cell-ci"><rect x="100" y="16" width="240" height="116"/>
+        <text class="qt" x="220" y="62" text-anchor="middle">Centralized,</text>
+        <text class="qt" x="220" y="84" text-anchor="middle">intra-organizational</text>
+        <text class="qs" x="220" y="108" text-anchor="middle" id="place-ci"></text></g>
+      <g class="cell" id="cell-ce"><rect x="350" y="16" width="240" height="116"/>
+        <text class="qt" x="470" y="62" text-anchor="middle">Centralized,</text>
+        <text class="qt" x="470" y="84" text-anchor="middle">inter-organizational</text>
+        <text class="qs" x="470" y="108" text-anchor="middle" id="place-ce"></text></g>
+      <g class="cell" id="cell-fi"><rect x="100" y="142" width="240" height="116"/>
+        <text class="qt" x="220" y="188" text-anchor="middle">Federated,</text>
+        <text class="qt" x="220" y="210" text-anchor="middle">intra-organizational</text>
+        <text class="qs" x="220" y="234" text-anchor="middle" id="place-fi"></text></g>
+      <g class="cell" id="cell-fe"><rect x="350" y="142" width="240" height="116"/>
+        <text class="qt" x="470" y="188" text-anchor="middle">Federated,</text>
+        <text class="qt" x="470" y="210" text-anchor="middle">inter-organizational</text>
+        <text class="qs" x="470" y="234" text-anchor="middle" id="place-fe"></text></g>
+      <text class="ax" x="4" y="78">Centralized</text>
+      <text class="ax" x="4" y="204">Federated</text>
+      <text class="ax" x="220" y="282" text-anchor="middle">Intra-organizational</text>
+      <text class="ax" x="470" y="282" text-anchor="middle">Inter-organizational</text>
+      <circle class="dot" id="dot" cx="345" cy="137" r="8"/>
+    </svg>
+    <figcaption id="m-cap"></figcaption>
+  </figure>
+  <div class="ranks" id="ranks"></div>
+  <p class="note" id="tie-note"></p>
+</section>
+
+<section class="card">
+  <p class="step">How your answers placed the project</p>
+  <h2>The two axes</h2>
+  <div class="axis">
+    <h3>Application area</h3>
+    <p id="area-text"></p>
+    <div class="score">
+      <small>Intra-organizational</small>
+      <div class="track"><span class="pin" id="pin-a"></span></div>
+      <small>Inter-organizational</small>
+      <b id="out-a"></b>
+    </div>
+  </div>
+  <div class="axis">
+    <h3>Governance mode</h3>
+    <p>Three inputs count equally: who keeps control over the data once it is shared (Q24), who holds the authority to set and enforce the rules (Q25), and the setting of the project (Q10 to Q16). An input left open counts as 0.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Question</th><th>Your answer</th><th>Points to</th></tr></thead>
+        <tbody id="gov-rows"></tbody>
+      </table>
+    </div>
+    <div class="score">
+      <small>Centralized</small>
+      <div class="track"><span class="pin" id="pin-g"></span></div>
+      <small>Federated</small>
+      <b id="out-g"></b>
+    </div>
+    <p class="note" id="cx-text"></p>
+  </div>
+</section>
+
+<section class="card">
+  <p class="step">What the result rests on</p>
+  <h2>Deciding answers and open questions</h2>
+  <h3>Answers that determined the result</h3>
+  <ul class="plain" id="drivers"></ul>
+  <h3>Questions that would settle the result</h3>
+  <div id="settle"></div>
+</section>
+
+<section class="card">
+  <p class="step">Description of the project</p>
+  <h2>Your other answers</h2>
+  <p class="note">These answers describe the project. They do not move the result, and they are kept here so that the result and the description it rests on stay together.</p>
+  <div id="describe"></div>
+</section>
+
+<section class="card no-print">
+  <p class="step">Keep your result</p>
+  <h2>Copy or change</h2>
+  <p class="note">Your answers stay in this browser on this device, and nothing is sent anywhere. To keep the result or pass it on, copy it as text for an email or a document, or as rows to paste into a spreadsheet.</p>
+  <div class="tools">
+    <button type="button" id="copy-summary">Copy result as text</button>
+    <button type="button" id="copy-rows">Copy as spreadsheet rows</button>
+    <button type="button" class="quiet" id="change">Change your answers</button>
+  </div>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+  <div id="copy-box" hidden>
+    <label class="note" for="copy-text">The browser did not allow copying. The text below is selected: press Ctrl+C, or Cmd+C on a Mac, to copy it.</label>
+    <textarea id="copy-text" class="copy-text" readonly rows="10"></textarea>
+  </div>
+</section>
+
+<footer>
+<p>The ranking concerns the project you described, not your organization as a whole. The approaches can be combined, so an organization may manage different projects in different ways.</p>
+<p>How the result is worked out. The four approaches are the corners of a matrix taken from Gie&szlig; and Hutterer (2025), who name them data fabric, data platform, data mesh and data space, with its two axes, application area and governance mode, as reconstructed in the thesis from an organizational perspective; the descriptions are the thesis&rsquo;s own. Q7 settles the application area on its own, and Q11 and Q12 are used only where Q7 is left open. The governance mode is the average of Q24, Q25 and the setting of the project, which count equally. The setting is the balance of Q10 to Q16: following Agerskans et al. (2026), a complex setting points to federated governance and a settled one to centralized governance. Each approach is ranked by its distance from the position of the project, the gap on governance mode plus the gap on application area.</p>
+<p>Decision support method developed in a master&rsquo;s thesis at the University of Twente.</p>
+</footer>
+
+</div>
+
+</div>
+
+<div class="bar" id="bar">
+  <div class="in">
+    <span class="count" id="count">0 of 25 answered</span>
+    <div class="track" aria-hidden="true"><span class="fill" id="fill"></span></div>
+    <span class="bar-btns" id="bar-main">
+      <button type="button" class="quiet" id="clear-bar">Clear all answers</button>
+      <button type="button" class="primary" id="submit-bar">See the result</button>
+    </span>
+    <span class="bar-btns" id="bar-ask" hidden>
+      <span class="ask">Clear all answers?</span>
+      <button type="button" class="danger" id="clear-bar-yes">Yes, clear them</button>
+      <button type="button" class="quiet" id="clear-bar-no">Keep them</button>
+    </span>
+  </div>
+</div>
+
+<script>
+/* The decision support method: the 25 questions, their coding and the rules of Step 4 of the
+   Treatment Design chapter. The same code as questionnaire-method.js, inlined so that the
+   questionnaire travels as one file.
+   Question wording is copied from Survey_materials/questionnaire_forms_ready.md; codes follow
+   Survey_materials/Coding table.md; the four descriptions are tbl-approaches in LR_Findings.typ.
+   Codes: -1 settled, centralized or intra-organizational; +1 complex, federated or
+   inter-organizational; 0 neither. "I am not sure / not decided yet" counts as not answered. */
+(function (root) {
+"use strict";
+
+const NS = {label: "I am not sure / not decided yet", gloss: "this still has to be decided, or I do not know it yet", ns: true, code: null};
+const MAX_OTHER = 300;
+const EPS = 1e-9;
+
+const BLOCKS = [
+ {id: "data", n: 1, title: "Data",
+  intro: "This section is about the data itself. What the data is, what state it is in when it leaves your side, where it came from, how sensitive it is and how often it has to be refreshed all put limits on how it can be shared and on what has to be arranged around it. Answer for the data in this specific project rather than for your organization as a whole."},
+ {id: "org", n: 2, title: "Organization",
+  intro: "This section is about why the data is shared and with whom: what the organization seeks from the exchange, which parties take part in it, and what is given or received in return. Answer for this specific project rather than for your organization as a whole."},
+ {id: "cx", n: 3, title: "Contextual complexity",
+  intro: "This section is about the setting in which the project runs: how settled its workflows are, how the actors relate to one another, how much is still uncertain about the data and the systems to be connected, and how far the project reaches into the organization. Answer for the situation as it stands now, rather than for the situation you expect to reach."},
+ {id: "tech", n: 4, title: "Technical",
+  intro: "This section is about how the exchange works in practice: the route the data takes between the parties, where the data sits once it is shared, what has to line up on both sides for it to be understood, how access is regulated, what sets an exchange off, and how many parties are involved. Answer for how you want the sharing to work, not only for what is already built."},
+ {id: "gov", n: 5, title: "Governance",
+  intro: "This section is about control over the data once it has been shared: who decides what may be done with it afterwards, and who holds the authority to set the rules for it and see that they are followed. These questions are often still open early in a project; please use the “I am not sure / not decided yet” option rather than guessing."}
+];
+
+// role: "describe" (no code), "gate" (Q7), "cx" (Q10 to Q16), "gov" (Q24, Q25).
+// An option's short is the name used for it on the result page.
+const QUESTIONS = [
+ {id: "q1", n: 1, block: "data", role: "describe", multi: true, other: true,
+  text: "Which of the following categories describe the data the project shares, or will share?",
+  short: "The categories of the data",
+  opts: [
+   {label: "Process data", gloss: "data from organizational processes, research or development", ex: "production line logs, maintenance records, R&D test results"},
+   {label: "Product data", gloss: "data from smart products or sensors, sometimes called Big Data", ex: "vibration readings from a pump, GPS traces from a truck fleet, machine telemetry"},
+   {label: "Environment data", gloss: "data about the surroundings", ex: "weather forecasts, air quality readings, soil or terrain maps"},
+   {label: "Customer data", gloss: "data specifically about customers", ex: "order history, contact details, subscription or usage behaviour"},
+   {label: "Metadata", gloss: "data that describes another dataset", ex: "a data catalogue entry, column definitions, the owner and timestamp of a file"},
+   NS]},
+ {id: "q2", n: 2, block: "data", role: "describe", multi: true, other: true,
+  text: "In which state is the data at the moment it is shared?",
+  short: "The state of the data when shared",
+  opts: [
+   {label: "Raw data", gloss: "exactly as received from the source", ex: "unfiltered sensor readings, untouched machine log files"},
+   {label: "Modified data", gloss: "data that has been preprocessed", ex: "duplicates removed, missing values filled in, units standardized, labels added"},
+   {label: "Enriched data", gloss: "the original data plus extra information from outside the original source", ex: "sales figures combined with regional demographics, sensor readings joined with weather data"},
+   {label: "Processed data", gloss: "data ready to be analysed by algorithms or ML models", ex: "a cleaned feature table, a pre-aggregated dataset"},
+   NS]},
+ {id: "q3", n: 3, block: "data", role: "describe", multi: true, other: false,
+  text: "From which sources does the shared data originate?",
+  short: "The source of the data",
+  opts: [
+   {label: "Generated data", gloss: "generated by our own operations, sensors and equipment", ex: "our own production line, our own machines and vehicles"},
+   {label: "Acquired data", gloss: "obtained from data generated by other organizations", ex: "bought from a data provider, received from a supplier under an agreement"},
+   {label: "Customer provided data", gloss: "collected directly from our own customers", ex: "forms customers fill in, survey answers, app usage"},
+   {label: "Freely available data", gloss: "data that is openly published and can be used without an agreement", ex: "open government datasets, public weather or map data"},
+   NS]},
+ {id: "q4", n: 4, block: "data", role: "describe", multi: false, other: false,
+  text: "Which level of privacy does the data require?",
+  short: "The level of privacy the data should have",
+  opts: [
+   {label: "Public data", gloss: "no restrictions apply, and the data may be shared without restriction", ex: "published open datasets, public timetables, published environmental readings"},
+   {label: "Internal data", gloss: "the data can be shared within the domain, but requires restrictions when shared outside the domain", ex: "internal performance reports, team dashboards"},
+   {label: "Confidential data", gloss: "as internal data, but more strongly restricted: only authorized personnel may access it", ex: "contract terms, pricing, unreleased product designs"},
+   {label: "Sensitive data", gloss: "the data contains personally identifiable information, so sharing it requires legal compliance (anonymization, pseudonymization)", ex: "employee records, patient data, customer personal data under GDPR"},
+   NS]},
+ {id: "q5", n: 5, block: "data", role: "describe", multi: false, other: false,
+  text: "How frequently does the data have to be updated once it is shared?",
+  short: "How often the data needs updating",
+  opts: [
+   {label: "Static", gloss: "no updates are required after sharing", ex: "a one-off historical export, a fixed reference table"},
+   {label: "Up to date", gloss: "repeated updates on a schedule", ex: "a daily or weekly batch upload"},
+   {label: "(near) Real time", gloss: "a live stream or continuous feed", ex: "sensor telemetry pushed the moment it is measured"},
+   NS]},
+
+ {id: "q6", n: 6, block: "org", role: "describe", multi: true, other: true,
+  text: "What motivates the sharing of this data?",
+  short: "The motivation for sharing",
+  opts: [
+   {label: "Economic", gloss: "money or efficiency", ex: "new revenue from selling data, cost savings, better forecasting"},
+   {label: "Social and environmental", gloss: "to contribute to social or environmental goals", ex: "sustainability reporting, emissions tracking, corporate social responsibility programmes"},
+   {label: "Legal", gloss: "legislation or a regulator requires the data to be shared", ex: "GDPR obligations, EU Data Act, regulator or safety reporting"},
+   {label: "Cultural", gloss: "to improve the culture around data sharing within the organization", ex: "breaking down silos between departments, building trust in shared data"},
+   NS]},
+ {id: "q7", n: 7, block: "org", role: "gate", multi: false, other: true,
+  text: "With whom is the data shared, or to be shared?",
+  short: "With whom the data is shared",
+  opts: [
+   {label: "Intra-organizational", gloss: "the data stays inside our own organization", ex: "between our production, sales and logistics departments", code: -1},
+   {label: "Same industry", gloss: "only with organizations in the same industry", ex: "a supplier sharing operational data with a manufacturer", code: 1},
+   {label: "Cross-industry", gloss: "across sector boundaries", ex: "sharing meteorology data with agriculture or aerospace companies", code: 1},
+   NS]},
+ {id: "q8", n: 8, block: "org", role: "describe", multi: true, other: true,
+  text: "What does your organization expect in return for sharing the data?",
+  short: "What is expected in return",
+  opts: [
+   {label: "Financial reward", gloss: "a monetary return", ex: "a licence fee, a price per dataset"},
+   {label: "Virtual assets", gloss: "digital assets that cannot be directly converted into cash", ex: "platform credits, tokens, points"},
+   {label: "Data in return", gloss: "data is received in exchange for the data shared", ex: "we share production data, the partner shares market data"},
+   {label: "Services", gloss: "additional or new services from the receiving party", ex: "a free analytics dashboard, a maintenance or benchmarking service"},
+   {label: "(Increased) Reputation", gloss: "greater brand awareness, trust or credibility", ex: "recognized as a trusted partner, publicity as a frontrunner in the sector"},
+   {label: "Nothing in return", gloss: "no return is expected", ex: "the data is shared because a regulator requires it, or it is published openly"},
+   NS]},
+ {id: "q9", n: 9, block: "org", role: "describe", multi: false, other: false,
+  text: "Which form of compensation is expected for the data?",
+  short: "The kind of compensation expected",
+  opts: [
+   {label: "Free", gloss: "the data is shared free of charge", ex: "internal sharing between departments, open data, legally mandated reporting"},
+   {label: "Fixed", gloss: "a single, fixed price, paid at once or in instalments", ex: "EUR 5,000 for a dataset"},
+   {label: "Subscription based", gloss: "a recurring price every set period", ex: "a monthly or yearly access fee"},
+   {label: "Usage based", gloss: "the compensation varies with how much the data is used", ex: "a price per API call, per record downloaded"},
+   {label: "Revenue based", gloss: "compensation based on the revenue generated from the shared data", ex: "8% of the revenue generated from the data, or royalties"},
+   {label: "Hybrid", gloss: "a combination of the models mentioned above", ex: "a base subscription plus a charge per API call"},
+   NS]},
+
+ {id: "q10", n: 10, block: "cx", role: "cx", multi: false, other: false,
+  text: "Which description fits the operations or workflows of the project?",
+  short: "The operations or workflows of the project",
+  opts: [
+   {label: "Well defined", gloss: "the workflows were already in operation before this project, with little room for change", ex: "an established production process, a reporting routine that already runs", code: -1, short: "Well defined"},
+   {label: "Still in development", gloss: "the workflows are being created for this project and are open to change", ex: "a new service being designed, a pilot with no fixed process yet", code: 1, short: "Still in development"},
+   NS]},
+ {id: "q11", n: 11, block: "cx", role: "cx", multi: false, other: false,
+  text: "How are the actors involved in the project related to one another?",
+  short: "How the actors are related to one another",
+  opts: [
+   {label: "The actors are independent of one another, with different systems and priorities", ex: "separate companies, each with their own IT and their own commercial interests", code: 1, short: "Independent actors"},
+   {label: "All of the actors in the project fall under the same organizational hierarchy", ex: "departments of one company, reporting up to the same leadership", code: -1, short: "Same organizational hierarchy"},
+   NS]},
+ {id: "q12", n: 12, block: "cx", role: "cx", multi: false, other: false,
+  text: "What does the involvement of the stakeholders require?",
+  short: "What the involvement of the stakeholders requires",
+  opts: [
+   {label: "Incentives have to be aligned, decisions agreed, and ownership and responsibilities defined across the stakeholders", ex: "negotiating who pays, who is liable, and who decides, between parties that can walk away", code: 1, short: "Alignment needed across parties"},
+   {label: "The stakeholders are already part of an internal or existing ecosystem, so governance is more direct", ex: "decisions can be escalated to a common manager or an existing steering group", code: -1, short: "Internal or existing ecosystem"},
+   NS]},
+ {id: "q13", n: 13, block: "cx", role: "cx", multi: false, other: false,
+  text: "How certain is it which data will be exchanged, and how it is measured?",
+  short: "How certain the data to be exchanged is",
+  opts: [
+   {label: "The data to be exchanged, and how it is measured, are still uncertain", ex: "the fields, units and quality are still to be discovered", code: 1, short: "Still to be discovered"},
+   {label: "Data structures and exchanges exist from before this project, so there is little uncertainty", ex: "the schemas and formats are already documented and in use", code: -1, short: "Structures already in use"},
+   NS]},
+ {id: "q14", n: 14, block: "cx", role: "cx", multi: false, other: false,
+  text: "What does the integration across the participating systems require?",
+  short: "What integration across the systems requires",
+  opts: [
+   {label: "Different systems and data formats may have to be accommodated", ex: "partners running different ERP systems, data arriving in incompatible formats", code: 1, short: "Different systems and formats"},
+   {label: "The integration and the data formats are already known and standardized", ex: "one agreed schema, systems that already talk to each other", code: -1, short: "Known and standardized"},
+   NS]},
+ {id: "q15", n: 15, block: "cx", role: "cx", multi: false, other: false,
+  text: "How many systems, data formats or organizations does the project have to connect?",
+  short: "How many systems, formats or organizations to connect",
+  opts: [
+   {label: "A few, all inside our own organization, and already known", ex: "two internal systems exchanging one agreed format", code: -1, short: "A few, all internal"},
+   {label: "Several, inside our own organization but across different domains or departments", ex: "the production system, the ERP and the sales system, each with its own format and owner", code: 0, short: "Several, across domains"},
+   {label: "Many, including systems owned by other organizations outside ours", ex: "several partners, each bringing their own systems, formats and standards", code: 1, short: "Many, including external"},
+   NS]},
+ {id: "q16", n: 16, block: "cx", role: "cx", multi: false, other: false,
+  text: "How will the project affect the organization?",
+  short: "How the project will affect the organization",
+  opts: [
+   {label: "New mechanisms and organizational structures will be put in place", ex: "new roles such as data owners or stewards, new decision-making bodies, changed responsibilities", code: 1, short: "New structures and roles"},
+   {label: "The project is mainly one of system integration and should not affect workflows or the organization", ex: "two systems get connected, everyone keeps working the way they did", code: -1, short: "System integration only"},
+   NS]},
+
+ {id: "q17", n: 17, block: "tech", role: "describe", multi: false, other: true,
+  text: "By which route is the data exchanged between the participants?",
+  short: "How the data is exchanged among participants",
+  opts: [
+   {label: "Peer to peer", gloss: "the data passes directly from one party to the other, with no intermediary", ex: "our system calls theirs directly, or they call an API we run ourselves"},
+   {label: "Platform based", gloss: "the exchange happens through the intermediation of a platform", ex: "a data marketplace, a shared portal, a broker that sits between provider and consumer"},
+   NS]},
+ {id: "q18", n: 18, block: "tech", role: "describe", multi: false, other: false,
+  text: "Where does the data reside when it is shared?",
+  short: "Where the data resides when shared",
+  opts: [
+   {label: "Centralized", gloss: "copied into one shared location, from which consumers retrieve it", ex: "a central data warehouse, data lake, or company-wide platform"},
+   {label: "Distributed", gloss: "the data stays where it is produced and is accessed at the source through an agreed interface", ex: "each domain or organization exposes its own data through a connector or API; nothing is duplicated centrally"},
+   {label: "Hybrid", gloss: "some data is copied into a central store, other data stays at the source and is accessed there"},
+   NS]},
+ {id: "q19", n: 19, block: "tech", role: "describe", multi: true, other: false,
+  text: "Which levels of interoperability does the exchange require between the parties?",
+  short: "The level of interoperability needed",
+  opts: [
+   {label: "Legal interoperability", gloss: "compatible legal frameworks, standards and regulations", ex: "matching contract clauses, GDPR-compliant terms, agreed usage policies"},
+   {label: "Organizational interoperability", gloss: "a shared understanding of processes, objectives and resources", ex: "agreed roles, responsibilities and escalation paths between the parties"},
+   {label: "Semantic interoperability", gloss: "consistency and interpretability across diverse sources and systems", ex: "a shared vocabulary or ontology, so that “customer” or “downtime” means the same thing on both sides"},
+   {label: "Technical interoperability", gloss: "the same technical data exchange across systems", ex: "matching formats and protocols, JSON over REST, OPC UA, agreed schemas"},
+   NS]},
+ {id: "q20", n: 20, block: "tech", role: "describe", multi: false, other: false,
+  text: "On what basis is access to the data granted?",
+  short: "How access to the data is managed",
+  opts: [
+   {label: "Agreement based", gloss: "access terms are defined between you and the other party", ex: "a bilateral data sharing contract, an NDA with data clauses"},
+   {label: "Application based", gloss: "access is regulated through those who use the specific application", ex: "only users logged into the shared dashboard can see the data"},
+   {label: "Trust based", gloss: "access is granted on the basis of trust", ex: "known partners are granted access without a formal contract or technical gate"},
+   {label: "Open", gloss: "no access restrictions apply, and anyone may access the data", ex: "published as open data"},
+   NS]},
+ {id: "q21", n: 21, block: "tech", role: "describe", multi: false, other: true,
+  text: "What triggers an exchange of data?",
+  short: "How the sharing is triggered",
+  opts: [
+   {label: "On demand", gloss: "sharing is triggered when the consumer asks for the data", ex: "the consumer queries the API when they need it"},
+   {label: "Event based", gloss: "triggered by an event specified by the provider", ex: "end of day, the dataset reaching a certain size, an alarm or threshold being crossed"},
+   {label: "Continuous", gloss: "sharing data in real time or at regular intervals", ex: "a live stream, or an automatic push every 15 minutes"},
+   NS]},
+ {id: "q22", n: 22, block: "tech", role: "describe", multi: false, other: false,
+  text: "Which pattern do the data sharing relationships follow?",
+  short: "The pattern the sharing relationships follow",
+  opts: [
+   {label: "One-to-one", gloss: "one party shares data with one other party", ex: "one supplier sends data to one manufacturer"},
+   {label: "One-to-many", gloss: "one party shares data with many other parties", ex: "one provider publishes a dataset that many consumers use"},
+   {label: "Many-to-one", gloss: "many parties share data with one other party", ex: "many suppliers report into one OEM"},
+   {label: "Many-to-many", gloss: "many parties share data with many other parties", ex: "an ecosystem where every participant both provides and consumes"},
+   NS]},
+ {id: "q23", n: 23, block: "tech", role: "describe", multi: false, other: false,
+  text: "How dependent are the parties on one another’s data?",
+  short: "How dependent the parties are on one another’s data",
+  opts: [
+   {label: "Loosely coupled", gloss: "each party can continue to operate if the data stops arriving", ex: "the shared data improves a forecast, but the process still runs without it"},
+   {label: "Tightly coupled", gloss: "the parties depend on each other’s data to operate", ex: "a production schedule that cannot be made without the partner’s live data"},
+   NS]},
+
+ {id: "q24", n: 24, block: "gov", role: "gov", multi: false, other: false,
+  text: "Once the data has been shared, who retains control over what may be done with it?",
+  short: "Who retains control over what may be done with the data",
+  opts: [
+   {label: "Sovereign control", gloss: "the provider keeps control over how the data may be used after sharing", ex: "usage policies travel with the data, the receiver may only use it for an agreed purpose", code: 1},
+   {label: "Transferred control", gloss: "the rights of use pass to the party that receives the data", ex: "we hand the dataset over and they may use it as they see fit", code: -1},
+   {label: "Shared control", gloss: "no restrictions are placed on ownership or use, and the parties hold it in common", ex: "a dataset produced jointly by a consortium that every member may use freely", code: 0},
+   NS]},
+ {id: "q25", n: 25, block: "gov", role: "gov", multi: false, other: false,
+  text: "Who holds the authority to set the rules for the shared data and to ensure that they are followed?",
+  short: "Who holds the authority to set and enforce the rules",
+  opts: [
+   {label: "Decentral units", gloss: "each party decides for its own data: whoever provides it sets the rules for it and decides who may access it", ex: "each domain or organization sets and enforces the rules for the data it publishes", code: 1},
+   {label: "A central unit", gloss: "one unit decides for all the parties, including for data it does not own", ex: "a central data office, a data intermediary, a trustee or broker acting on behalf of the parties", code: -1},
+   {label: "Both", gloss: "a central body and the parties share the authority", ex: "a consortium body or joint steering group sets the common rules, and each party decides within them", code: 0},
+   NS]}
+];
+
+// The four management approaches, defined on the two axes alone (tbl-approaches). Unnamed on
+// purpose: each is referred to by its governance mode and application area.
+// Listed in matrix reading order, which also orders approaches that tie.
+const APPROACHES = [
+ {id: "ci", g: -1, a: -1,
+  desc: "A management approach for a data ecosystem whose actors are units of one organization. A central unit holds the decision-making authority over the shared data, and the units transfer control over the data they share to it."},
+ {id: "ce", g: -1, a: 1,
+  desc: "A management approach for a data ecosystem whose actors are separate organizations. A single party, the operator of the platform, holds the decision-making authority over the shared data, and the participating organizations transfer control over the data they share to it."},
+ {id: "fi", g: 1, a: -1,
+  desc: "A management approach for a data ecosystem whose actors are units of one organization. Each unit holds the decision-making authority over the data it provides and keeps control over that data once it is shared, within rules and standards common to all units."},
+ {id: "fe", g: 1, a: 1,
+  desc: "A management approach for a data ecosystem whose actors are separate organizations. Each organization holds the decision-making authority over the data it provides and keeps control over that data once it is shared, through usage policies, within rules and standards the participants agree on."}
+];
+
+const GOV = {"-1": "centralized", "1": "federated"};
+const AREA = {"-1": "intra-organizational", "1": "inter-organizational"};
+
+const questionById = id => QUESTIONS.find(q => q.id === id);
+const sign = x => x > EPS ? 1 : x < -EPS ? -1 : 0;
+const fmt = x => (Math.abs(x) < EPS ? 0 : x).toFixed(2);
+const signed = x => sign(x) > 0 ? "+" + fmt(x) : sign(x) < 0 ? "−" + fmt(-x) : "0";
+
+function approachName(ap, opts) {
+  const o = opts || {};
+  const base = GOV[ap.g] + ", " + AREA[ap.a];
+  if (o.sentence) return (o.capital ? "The " : "the ") + base + " approach";
+  return base.charAt(0).toUpperCase() + base.slice(1);
+}
+
+// An answer is {sel: [option indices], other: string or null}.
+function isAnswered(q, a) {
+  return !!a && (a.sel.length > 0 || (a.other !== null && a.other.trim() !== ""));
+}
+
+function answerText(q, a) {
+  if (!isAnswered(q, a)) return "not answered";
+  const parts = a.sel.map(i => q.opts[i].short || q.opts[i].label);
+  if (a.other !== null && a.other.trim() !== "") parts.push("Other: " + a.other.trim());
+  return parts.join("; ");
+}
+
+function encode(ans, extra) {
+  const p = new URLSearchParams();
+  p.set("v", "1");
+  QUESTIONS.forEach(q => {
+    const a = ans[q.id];
+    if (!a) return;
+    const parts = a.sel.map(String);
+    if (a.other !== null) parts.push("o");
+    if (!parts.length) return;
+    p.set(q.id, parts.join("."));
+    if (a.other) p.set(q.id + "o", a.other.slice(0, MAX_OTHER));
+  });
+  if (extra) Object.keys(extra).forEach(k => p.set(k, extra[k]));
+  return p.toString();
+}
+
+function decode(hash) {
+  const p = new URLSearchParams(String(hash || "").replace(/^#/, ""));
+  const ans = {};
+  QUESTIONS.forEach(q => {
+    const raw = p.get(q.id);
+    if (raw === null) return;
+    const sel = [];
+    let other = null;
+    raw.split(".").forEach(t => {
+      if (t === "o" && q.other) { other = (p.get(q.id + "o") || "").slice(0, MAX_OTHER); return; }
+      if (!/^\d+$/.test(t)) return;
+      const i = parseInt(t, 10);
+      if (i < q.opts.length && sel.indexOf(i) < 0) sel.push(i);
+    });
+    const ns = q.opts.findIndex(o => o.ns);
+    if (sel.indexOf(ns) >= 0) { sel.length = 0; sel.push(ns); other = null; }
+    if (!q.multi && sel.length) { sel.length = 1; other = null; }
+    sel.sort((x, y) => x - y);
+    if (sel.length || other !== null) ans[q.id] = {sel: sel, other: other};
+  });
+  return {ans: ans, go: p.get("go")};
+}
+
+// The coded reading of a single-answer question. code is null when the question is not
+// answered, is answered "not sure", or is answered with a description of the respondent's own.
+function reading(ans, id) {
+  const q = questionById(id), a = ans[id];
+  if (!isAnswered(q, a)) return {id: id, q: q, state: "open", code: null, text: answerText(q, a)};
+  if (!a.sel.length) return {id: id, q: q, state: "other", code: null, text: a.other.trim()};
+  const o = q.opts[a.sel[0]];
+  if (o.ns) return {id: id, q: q, state: "ns", code: null, text: o.label};
+  return {id: id, q: q, state: "coded", code: o.code, text: o.short || o.label};
+}
+
+function ranking(g, a) {
+  const r = APPROACHES.map(ap => {
+    const dg = Math.abs(ap.g - g), da = Math.abs(ap.a - a);
+    return Object.assign({}, ap, {dg: dg, da: da, d: dg + da});
+  }).sort((x, y) => x.d - y.d);
+  r.forEach((c, i) => {
+    const tie = i > 0 && Math.abs(c.d - r[i - 1].d) < EPS;
+    c.place = i === 0 ? 1 : tie ? r[i - 1].place : r[i - 1].place + 1;
+  });
+  r.forEach(c => { c.tied = r.filter(x => x.place === c.place).length > 1; });
+  return r;
+}
+
+// Step 4 of the Treatment Design chapter, at its fixed equal weights.
+function evaluate(ans) {
+  // Contextual complexity level from Q10 to Q16; not-sure answers are left out of the count.
+  const cx = {complex: [], settled: [], neither: [], open: []};
+  QUESTIONS.filter(q => q.role === "cx").forEach(q => {
+    const r = reading(ans, q.id);
+    if (r.code === null) cx.open.push(r);
+    else if (r.code > 0) cx.complex.push(r);
+    else if (r.code < 0) cx.settled.push(r);
+    else cx.neither.push(r);
+  });
+  cx.level = sign(cx.complex.length - cx.settled.length);
+
+  // Governance mode: the average of Q24, Q25 and the complexity level; unanswered counts as 0.
+  const q24 = reading(ans, "q24"), q25 = reading(ans, "q25");
+  const gov = {q24: q24, q25: q25, level: cx.level};
+  gov.score = ((q24.code || 0) + (q25.code || 0) + cx.level) / 3;
+
+  // Application area: Q7 is the gate; without it, the average of Q11 and Q12.
+  const q7 = reading(ans, "q7"), q11 = reading(ans, "q11"), q12 = reading(ans, "q12");
+  const area = {q7: q7, q11: q11, q12: q12};
+  if (q7.code !== null) { area.mode = "gate"; area.score = q7.code; }
+  else {
+    area.score = ((q11.code || 0) + (q12.code || 0)) / 2;
+    area.mode = Math.abs(area.score) < EPS ? "open" : "fallback";
+  }
+
+  const rankings = area.mode === "open"
+    ? [{column: -1, r: ranking(gov.score, -1)}, {column: 1, r: ranking(gov.score, 1)}]
+    : [{column: null, r: ranking(gov.score, area.score)}];
+
+  // Step 5: the answers that determined the result, and the questions that would settle it.
+  const drivers = [];
+  if (area.mode === "gate") drivers.push({kind: "area", items: [q7]});
+  else if (area.mode === "fallback") drivers.push({kind: "area", items: [q11, q12].filter(r => r.code !== null)});
+  [q24, q25].forEach(r => { if (r.code !== null) drivers.push({kind: "gov", items: [r]}); });
+  if (cx.level !== 0) drivers.push({kind: "cx", side: cx.level > 0 ? "complex" : "settled", items: cx.level > 0 ? cx.complex : cx.settled});
+
+  const settle = [q7, q24, q25].filter(r => r.code === null).concat(cx.open);
+
+  return {cx: cx, gov: gov, area: area, rankings: rankings, drivers: drivers, settle: settle};
+}
+
+const API = {NS: NS, BLOCKS: BLOCKS, QUESTIONS: QUESTIONS, APPROACHES: APPROACHES, GOV: GOV, AREA: AREA, EPS: EPS,
+  MAX_OTHER: MAX_OTHER, questionById: questionById, sign: sign, fmt: fmt, signed: signed, approachName: approachName,
+  isAnswered: isAnswered, answerText: answerText, encode: encode, decode: decode, reading: reading,
+  ranking: ranking, evaluate: evaluate};
+
+if (typeof module !== "undefined" && module.exports) module.exports = API;
+else root.QM = API;
+})(this);
+</script>
+
+<script>
+(function(){
+const {BLOCKS,QUESTIONS,APPROACHES,GOV,AREA,EPS,MAX_OTHER,encode,decode,isAnswered,evaluate,answerText,questionById,reading,fmt,signed,sign,approachName}=QM;
+const KEY="ecosystem-questionnaire-draft";
+const KEY_VIEW="ecosystem-questionnaire-view";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const save=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
+const load=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const today=()=>new Date().toISOString().slice(0,10);
+
+/* ---------- The two views ---------- */
+
+let view="form";
+function show(v){
+  view=v;
+  $("view-form").hidden=v!=="form";
+  $("view-result").hidden=v!=="result";
+  $("bar").hidden=v!=="form";
+  save(KEY_VIEW,v);
+}
+
+/* ---------- The questionnaire ---------- */
+
+function optionHTML(q,o,i){
+  const type=q.multi?"checkbox":"radio";
+  const text=o.gloss?`<b>${esc(o.label)}</b>: ${esc(o.gloss)}`:esc(o.label);
+  const ex=o.ex?`<span class="ex">For example, ${esc(o.ex)}</span>`:"";
+  return `<label class="opt${o.ns?" ns":""}"><input type="${type}" name="${q.id}" id="${q.id}-${i}" value="${i}"><span>${text}${ex}</span></label>`;
+}
+
+function otherHTML(q){
+  const type=q.multi?"checkbox":"radio";
+  return `<label class="opt other"><input type="${type}" name="${q.id}" id="${q.id}-o" value="o"><span><b>Other</b>`+
+    `<input type="text" class="other-text" id="${q.id}-text" data-other="${q.id}" maxlength="${MAX_OTHER}" aria-label="Q${q.n}, other answer" placeholder="Describe your answer"></span></label>`;
+}
+
+function build(){
+  const form=$("form");
+  BLOCKS.forEach(b=>{
+    const sec=document.createElement("section");
+    sec.className="card";
+    let h=`<p class="step">Section ${b.n} of ${BLOCKS.length}</p><h2>${esc(b.title)}</h2><p class="intro">${esc(b.intro)}</p>`;
+    QUESTIONS.filter(q=>q.block===b.id).forEach(q=>{
+      const hint=(q.multi?"Tick all that apply":"One answer")+(q.other?", or write in another":"");
+      h+=`<fieldset class="q" id="${q.id}"><legend><span class="qn">Q${q.n}</span> ${esc(q.text)}</legend>`+
+         `<p class="hint">${hint}<span class="need"> &middot; an answer is needed</span></p><div class="opts">`;
+      q.opts.forEach((o,i)=>{
+        if(o.ns&&q.other)h+=otherHTML(q);
+        h+=optionHTML(q,o,i);
+      });
+      h+=`</div></fieldset>`;
+    });
+    sec.innerHTML=h;
+    form.appendChild(sec);
+  });
+}
+
+const inputs=q=>Array.from(document.querySelectorAll(`input[name="${q.id}"]`));
+const otherBox=q=>document.querySelector(`[data-other="${q.id}"]`);
+
+function readQ(q){
+  const ins=inputs(q);
+  const sel=ins.filter(i=>i.checked&&i.value!=="o").map(i=>parseInt(i.value,10));
+  const o=ins.find(i=>i.value==="o");
+  const other=o&&o.checked?otherBox(q).value:null;
+  return sel.length||other!==null?{sel,other}:null;
+}
+
+function readAll(){
+  const ans={};
+  QUESTIONS.forEach(q=>{const a=readQ(q);if(a)ans[q.id]=a});
+  return ans;
+}
+
+function fill(ans){
+  QUESTIONS.forEach(q=>{
+    const a=ans[q.id];
+    inputs(q).forEach(i=>{
+      i.checked=!!a&&(i.value==="o"?a.other!==null:a.sel.indexOf(parseInt(i.value,10))>=0);
+    });
+    if(q.other)otherBox(q).value=a&&a.other!==null?a.other:"";
+  });
+}
+
+function refresh(){
+  const ans=readAll();
+  const n=QUESTIONS.filter(q=>isAnswered(q,ans[q.id])).length;
+  $("count").textContent=`${n} of ${QUESTIONS.length} answered`;
+  $("fill").style.width=(n/QUESTIONS.length*100).toFixed(1)+"%";
+  QUESTIONS.forEach(q=>{if(isAnswered(q,ans[q.id]))$(q.id).classList.remove("missing")});
+  if(n===QUESTIONS.length)$("msg").textContent="";
+  return ans;
+}
+
+function onChange(e){
+  const t=e.target;
+  const q=QUESTIONS.find(x=>x.id===(t.name||t.dataset.other));
+  if(!q)return;
+  if(t.dataset.other!==undefined){
+    // typing in the text field selects "Other"
+    const o=inputs(q).find(i=>i.value==="o");
+    if(t.value!==""&&!o.checked){o.checked=true;exclusive(q,o)}
+  }else if(t.checked){
+    exclusive(q,t);
+    if(t.value==="o")otherBox(q).focus();
+  }
+  $("ex-status").textContent="";
+  save(KEY,encode(refresh()));
+}
+
+// "I am not sure / not decided yet" cannot be combined with another answer.
+function exclusive(q,t){
+  if(!q.multi)return;
+  const ns=String(q.opts.findIndex(o=>o.ns));
+  inputs(q).forEach(i=>{
+    if(i===t)return;
+    if(t.value===ns||i.value===ns)i.checked=false;
+  });
+}
+
+function submit(){
+  const ans=refresh();
+  const missing=QUESTIONS.filter(q=>!isAnswered(q,ans[q.id]));
+  if(missing.length){
+    missing.forEach(q=>$(q.id).classList.add("missing"));
+    const list=missing.map(q=>"Q"+q.n).join(", ");
+    $("msg").textContent=(missing.length===1?"One question still needs an answer: ":missing.length+" questions still need an answer: ")+list+
+      ". Where the answer is not known, choose “I am not sure / not decided yet”.";
+    const first=$(missing[0].id);
+    first.scrollIntoView({behavior:"smooth",block:"start"});
+    const target=missing[0].other&&inputs(missing[0]).find(i=>i.value==="o"&&i.checked)?otherBox(missing[0]):inputs(missing[0])[0];
+    target.focus({preventScroll:true});
+    return;
+  }
+  $("msg").textContent="";
+  renderResult(ans);
+  show("result");
+  window.scrollTo(0,0);
+  $("result-title").focus({preventScroll:true});
+}
+
+function clearAll(){
+  fill({});
+  QUESTIONS.forEach(q=>$(q.id).classList.remove("missing","go"));
+  save(KEY,null);
+  $("restored").hidden=true;
+  $("clear-ask").hidden=true;
+  barAsk(false);
+  $("ex-status").textContent="";
+  refresh();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// Back from the result to one question, marked so it is easy to find.
+function goTo(id){
+  show("form");
+  document.querySelectorAll("fieldset.q.go").forEach(f=>f.classList.remove("go"));
+  const fs=$(id);
+  fs.classList.add("go");
+  fs.scrollIntoView({block:"start"});
+  inputs(questionById(id))[0].focus({preventScroll:true});
+}
+
+/* ---------- Example 1 ---------- */
+
+// The regional distribution hub: Example A of the expert validation survey, the answers of
+// Survey_materials/Example 1 Answers.docx. Options are named by label, or by short where one is set.
+const EX1_SPEC={
+  q1:["Process data","Product data"], q2:["Modified data"], q3:["Generated data","Acquired data"],
+  q4:["Confidential data"], q5:["(near) Real time"],
+  q6:["Economic"], q7:["Same industry"], q8:["Data in return"], q9:["Free"],
+  q10:["Well defined"], q11:["Independent actors"], q12:["Alignment needed across parties"],
+  q13:["Structures already in use"], q14:["Different systems and formats"], q15:["Many, including external"],
+  q16:["System integration only"],
+  q17:["Platform based"], q18:["Centralized"], q19:["Semantic interoperability","Technical interoperability"],
+  q20:["Agreement based"], q21:["Continuous"], q22:["One-to-many"], q23:["Tightly coupled"],
+  q24:["Transferred control"], q25:["A central unit"]
+};
+
+function answersFrom(spec){
+  const out={};
+  Object.keys(spec).forEach(id=>{
+    const q=questionById(id);
+    const sel=spec[id].map(n=>{
+      const i=q.opts.findIndex(o=>o.label===n||o.short===n);
+      if(i<0)throw new Error(`Example 1, ${id}: no option named "${n}"`);
+      return i;
+    }).sort((x,y)=>x-y);
+    out[id]={sel:sel,other:null};
+  });
+  return out;
+}
+
+const EX1=answersFrom(EX1_SPEC);
+const isExample=a=>encode(a)===encode(EX1);
+
+function fillExample(){
+  fill(EX1);
+  QUESTIONS.forEach(q=>$(q.id).classList.remove("missing","go"));
+  $("ex-ask").hidden=true;
+  $("restored").hidden=true;
+  save(KEY,encode(refresh()));
+  $("ex-status").textContent="Example 1 is filled in: every question below now carries the hub’s answer. Use “See the result” to see what the method makes of it.";
+}
+
+/* ---------- The result ---------- */
+
+let ans={},R=null,g=0;
+// A name each corner can go by, given only in the hedged suggestion of the recommendation.
+const NAME={ci:"data fabric",ce:"data platform",fi:"data mesh",fe:"data space"};
+const orList=xs=>xs.length<2?xs.join(""):xs.slice(0,-1).join(", ")+" or "+xs[xs.length-1];
+function suggestion(top,whose,label){
+  const names=orList(top.map(c=>"a "+NAME[c.id]+(label?` (${approachName(c).toLowerCase()})`:"")));
+  return top.length===1
+    ?`Based on ${whose} answers, it may be worth investigating whether ${names}, as one possible way of putting ${label?"the nearest":"this"} approach into practice, could fit your organization’s needs.`
+    :`Based on ${whose} answers, it may be worth investigating whether ${names}, as possible ways of putting ${label?"the nearest":"these"} approaches into practice, could fit your organization’s needs.`;
+}
+const COLUMN={"-1":"If the data stays inside your organization","1":"If the data is shared with other organizations"};
+const AREA_MODE={gate:"settled by Q7",fallback:"read from Q11 and Q12",open:"both columns open"};
+
+const qref=q=>`<span class="qref">Q${q.n}</span>`;
+const quoted=s=>"“"+esc(s)+"”";
+const ansOf=id=>answerText(questionById(id),ans[id]);
+const points=c=>c>0?"Federated (+1)":c<0?"Centralized (−1)":"Neither (0)";
+const lean=x=>sign(x)>0?"towards federated":sign(x)<0?"towards centralized":"exactly between the two";
+const list=items=>items.map(r=>`Q${r.q.n} (${esc(r.text)})`).join(", ");
+const cxSummary=()=>`${R.cx.complex.length} complex, ${R.cx.settled.length} settled, ${R.cx.neither.length} neither, ${R.cx.open.length} open`;
+const driverItems=()=>R.drivers.map(d=>d.kind==="cx"
+  ?`Q10 to Q16 ${d.side} side: ${d.items.map(r=>"Q"+r.q.n).join(", ")}`
+  :d.items.map(r=>`Q${r.q.n} (${r.text})`).join("; "));
+
+// 1. The nearest approach, or one per column when the column is open.
+function leadHTML(k){
+  const top=k.r.filter(c=>c.place===1);
+  const head=k.column===null?"Nearest to your answers":COLUMN[k.column];
+  if(top.length>1){
+    return `<div class="lead"><p class="step">${head}</p><h2>${["","","Two","Three","Four"][top.length]} approaches are equally near</h2>`+
+      top.map(c=>`<p class="desc"><b>${approachName(c)}.</b> ${esc(c.desc)}</p>`).join("")+
+      `<p class="desc">${suggestion(top,"your")}</p>`+
+      `<p class="meta">Each lies ${fmt(top[0].d)} from the position of your project. Why they tie is explained with the ranking below.</p></div>`;
+  }
+  const c=top[0];
+  return `<div class="lead"><p class="step">${head}</p><h2>${approachName(c,{sentence:true,capital:true})}</h2>`+
+    `<p class="desc">${esc(c.desc)}</p>`+
+    `<p class="desc">${suggestion(top,"your")}</p>`+
+    `<p class="meta">It lies ${fmt(c.d)} from the position of your project, against ${fmt(k.r[1].d)} for the next approach. The full ranking and the reasons follow below.</p></div>`;
+}
+
+// 2. The reason for each place, from the two gaps.
+function reason(c){
+  let col;
+  if(R.area.mode==="gate"){
+    col=c.da<EPS
+      ?`In the ${AREA[c.a]} column, where your answer to Q7 (${esc(R.area.q7.text)}) puts the project.`
+      :`In the ${AREA[c.a]} column, while your answer to Q7 (${esc(R.area.q7.text)}) puts the project in the ${AREA[-c.a]} column, which adds 2 to its distance.`;
+  }else if(R.area.mode==="fallback"){
+    col=c.da<1
+      ?`On the side your answers to Q11 and Q12 point to, ${fmt(c.da)} from the project on application area.`
+      :`On the other side from the one your answers to Q11 and Q12 point to, ${fmt(c.da)} from the project on application area.`;
+  }else{
+    col=c.da<EPS?"In the column this ranking assumes.":"In the other column, which adds 2 to its distance.";
+  }
+  return col+` On governance mode it is ${GOV[c.g]}, ${fmt(c.dg)} from the position of your project (${signed(g)}).`;
+}
+
+function rankHTML(k){
+  const head=k.column===null?"":`<h3>${COLUMN[k.column]}</h3>`;
+  return `<div>${head}<ol>`+k.r.map(c=>
+    `<li><span class="p">${c.place}</span><div>`+
+    `<p class="nm">${approachName(c)}${c.tied?'<span class="tie">tied</span>':""}</p>`+
+    `<p class="rs">${reason(c)}</p>`+
+    `<details><summary>What this approach means</summary><p>${esc(c.desc)}</p></details></div>`+
+    `<span class="d"><b>${fmt(c.d)}</b>distance</span></li>`).join("")+`</ol></div>`;
+}
+
+function tieNote(){
+  const anyTie=R.rankings.some(k=>k.r.some(c=>c.tied));
+  let t="";
+  if(anyTie&&Math.abs(g)<EPS)t="Your answers place the project exactly between centralized and federated governance, so the two approaches in each column are equally near. An answer to Q24 or Q25, or a different balance in Q10 to Q16, would separate them.";
+  else if(anyTie)t="Approaches at the same distance share a place: the gap on one axis is offset exactly by the gap on the other.";
+  if(R.area.mode==="open")t=(t?t+" ":"")+"The column is not settled by your answers, so the ranking is given for each column.";
+  return t;
+}
+
+// 3. How the answers placed the project.
+function areaText(){
+  const a=R.area;
+  if(a.mode==="gate"){
+    let t=`Q7, with whom the data is shared, settles the application area on its own. Your answer, ${quoted(a.q7.text)}, places the project in the ${AREA[a.score]} column.`;
+    if(a.score>0)t+=" Sharing within one industry and across industries count alike, because the question is only whether the data crosses the boundary of your organization.";
+    return t;
+  }
+  let t=a.q7.state==="other"
+    ?`Your answer to Q7 is a description of your own (${quoted(a.q7.text)}), which cannot be read as one column or the other, so`
+    :a.q7.state==="ns"?"Q7 was answered “I am not sure / not decided yet”, so":"Q7 was not answered, so";
+  t+=` the column is read from Q11 and Q12 instead: ${quoted(a.q11.text)} and ${quoted(a.q12.text)}.`;
+  if(a.mode==="fallback"){
+    t+=` Together they point to the ${AREA[sign(a.score)]} column (${signed(a.score)}).`;
+    if(a.q11.code===null||a.q12.code===null)t+=" A question left open counts as 0.";
+  }else{
+    t+=" Together they do not point to one column, so both columns stay open and the ranking is given for each.";
+  }
+  return t+" An answer to Q7 would settle the column.";
+}
+
+function govRows(){
+  const C=R.cx;
+  const counts=[`${C.complex.length} complex`,`${C.settled.length} settled`];
+  if(C.neither.length)counts.push(`${C.neither.length} neither`);
+  if(C.open.length)counts.push(`${C.open.length} open`);
+  const row=(q,label,answer,code)=>`<tr><td>${q}${label}</td><td>${answer}</td><td class="num">${code===null?"Neither (0), left open":points(code)}</td></tr>`;
+  return [R.gov.q24,R.gov.q25].map(r=>row(qref(r.q),esc(r.q.short),esc(r.text),r.code)).join("")+
+    row('<span class="qref">Q10 to Q16</span>',"The setting of the project",counts.join(", "),C.level)+
+    `<tr class="total"><td>Governance mode, the average of the three</td><td></td><td class="num">${signed(g)}, ${lean(g)}</td></tr>`;
+}
+
+function cxText(){
+  const C=R.cx;
+  let t="In each of Q10 to Q16 one answer describes a settled situation, such as workflows already in operation or actors under one hierarchy, and another a complex one, such as workflows still in development or independent actors. ";
+  t+=`On the complex side: ${C.complex.length?list(C.complex):"none"}. On the settled side: ${C.settled.length?list(C.settled):"none"}.`;
+  if(C.neither.length)t+=` On neither side: ${list(C.neither)}.`;
+  if(C.open.length)t+=` Left open, and so not counted: ${C.open.map(r=>"Q"+r.q.n).join(", ")}.`;
+  const answered=C.complex.length+C.settled.length+C.neither.length;
+  if(C.level>0)t+=" With more answers on the complex side, the setting points to federated governance.";
+  else if(C.level<0)t+=" With more answers on the settled side, the setting points to centralized governance.";
+  else if(!answered)t+=" None of the seven was answered, so the setting points to neither.";
+  else t+=" With as many answers on each side, the setting points to neither.";
+  return t;
+}
+
+// 4. Answers that determined the result, and questions that would settle it.
+function driversHTML(){
+  if(!R.drivers.length)return "<li>None of the questions that move the result was answered, so the position is the centre of the matrix.</li>";
+  return R.drivers.map(d=>{
+    if(d.kind==="cx")return `<li><span class="qref">Q10 to Q16</span>The setting of the project, ${d.side} side: ${list(d.items)}</li>`;
+    return d.items.map(r=>`<li>${qref(r.q)}${esc(r.q.short)}: ${esc(r.text)}</li>`).join("");
+  }).join("");
+}
+
+function whySettle(r){
+  return r.id==="q7"
+    ?(r.state==="other"?"your own description cannot be placed in a column; one of the listed answers would settle it":"it would settle the column")
+    :r.q.role==="gov"?"it would move the position on governance mode"
+    :"it would change the balance of the setting";
+}
+
+function settleHTML(){
+  if(!R.settle.length)return '<p class="note">None. Every question that moves the result has been answered.</p>';
+  return '<p class="note">These questions were left open. Each of them can move the position of the project, so answering one later may change the ranking.</p><ul class="plain">'+
+    R.settle.map(r=>`<li><a href="#${r.id}" data-go="${r.id}">${qref(r.q)}${esc(r.q.short)}</a>: ${whySettle(r)}.</li>`).join("")+"</ul>";
+}
+
+// 5. The answers that describe the project.
+function describeHTML(){
+  return BLOCKS.map(b=>{
+    const qs=QUESTIONS.filter(q=>q.block===b.id&&q.role==="describe");
+    if(!qs.length)return "";
+    return `<h3>${esc(b.title)}</h3><dl>`+qs.map(q=>`<dt>${qref(q)}${esc(q.short)}</dt><dd>${esc(ansOf(q.id))}</dd>`).join("")+"</dl>";
+  }).join("");
+}
+
+function matrix(){
+  const live=new Set();
+  R.rankings.forEach(k=>k.r.filter(c=>c.place===1).forEach(c=>live.add(c.id)));
+  const single=R.rankings.length===1?R.rankings[0].r:null;
+  APPROACHES.forEach(ap=>{
+    $("cell-"+ap.id).classList.toggle("live",live.has(ap.id));
+    const c=single&&single.find(x=>x.id===ap.id);
+    $("place-"+ap.id).textContent=c?`Place ${c.place} · distance ${fmt(c.d)}`:"";
+  });
+  $("dot").setAttribute("cx",(345+R.area.score*235).toFixed(1));
+  $("dot").setAttribute("cy",(137+g*111).toFixed(1));
+  $("m-cap").textContent=R.area.mode==="open"
+    ?"The dot marks where your answers place the project. The column is not settled, so the dot sits on the line between the columns and the nearest approach of each column is marked."
+    :"The dot marks where your answers place the project. The nearer an approach’s corner, the higher it ranks.";
+}
+
+function track(pin,out,x){
+  $(pin).style.left=(((x+1)/2)*100).toFixed(1)+"%";
+  $(out).textContent=signed(x);
+}
+
+function renderResult(a){
+  ans=a;R=evaluate(ans);g=R.gov.score;
+  $("ex-note").hidden=!isExample(ans);
+  $("leads").innerHTML=R.rankings.map(leadHTML).join("");
+  $("ranks").className="ranks"+(R.rankings.length>1?" two":"");
+  $("ranks").innerHTML=R.rankings.map(rankHTML).join("");
+  $("tie-note").textContent=tieNote();
+  matrix();
+  $("area-text").innerHTML=areaText();
+  track("pin-a","out-a",R.area.score);
+  $("gov-rows").innerHTML=govRows();
+  track("pin-g","out-g",g);
+  $("cx-text").innerHTML=cxText();
+  $("drivers").innerHTML=driversHTML();
+  $("settle").innerHTML=settleHTML();
+  $("describe").innerHTML=describeHTML();
+  $("copy-box").hidden=true;
+  $("status").textContent="";
+}
+
+/* ---------- Keeping the result ---------- */
+
+function rows(){
+  const role=q=>{
+    if(q.role==="describe")return "describes the project";
+    const r=reading(ans,q.id);
+    if(q.role==="gate")return r.code===null?"application area, left open":"application area: "+AREA[r.code]+" column";
+    if(q.role==="gov")return "governance mode: "+(r.code===null?"left open, counts as 0":points(r.code).toLowerCase());
+    return "setting of the project: "+(r.code===null?"left open":r.code>0?"complex side":r.code<0?"settled side":"neither side");
+  };
+  const out=[["question","short label","answer","role in the result"]];
+  QUESTIONS.forEach(q=>out.push(["Q"+q.n,q.short,ansOf(q.id),role(q)]));
+  out.push([]);
+  out.push(["application area",signed(R.area.score),AREA_MODE[R.area.mode]]);
+  out.push(["setting of the project (Q10 to Q16)",signed(R.cx.level),cxSummary()]);
+  out.push(["governance mode",signed(g),lean(g)]);
+  R.rankings.forEach(k=>out.push([k.column===null?"ranking":"ranking, "+COLUMN[k.column].toLowerCase()].concat(
+    k.r.map(c=>`${c.place}. ${approachName(c)} (${fmt(c.d)}${c.tied?", tied":""})`))));
+  out.push(["answers that determined the result",driverItems().join("; ")||"none"]);
+  out.push(["questions that would settle the result",R.settle.map(r=>"Q"+r.q.n).join(", ")||"none"]);
+  if(isExample(ans))out.push(["answers of","Example 1, a regional distribution hub"]);
+  out.push(["completed",today()]);
+  return out;
+}
+
+const spreadsheetRows=()=>rows().map(r=>r.map(c=>String(c).replace(/[\t\r\n]+/g," ")).join("\t")).join("\r\n");
+
+function summaryText(){
+  const L=["Data ecosystem questionnaire: result"];
+  if(isExample(ans))L.push("Answers of Example 1, a regional distribution hub");
+  L.push("Completed "+today(),"");
+  R.rankings.forEach(k=>{
+    L.push(k.column===null?"Ranking, nearest first":"Ranking "+COLUMN[k.column].toLowerCase()+", nearest first");
+    k.r.forEach(c=>L.push(`${c.place}. ${approachName(c)}, distance ${fmt(c.d)}${c.tied?", tied":""}`));
+    const top=k.r.filter(c=>c.place===1);
+    L.push(suggestion(top,"these",true));
+    L.push("");
+  });
+  L.push("How the answers placed the project");
+  L.push(`Application area: ${signed(R.area.score)}, ${AREA_MODE[R.area.mode]}`);
+  L.push(`Setting of the project (Q10 to Q16): ${signed(R.cx.level)}, ${cxSummary()}`);
+  L.push(`Governance mode: ${signed(g)}, ${lean(g)}`);
+  L.push("");
+  L.push("Answers that determined the result");
+  const d=driverItems();
+  L.push(...(d.length?d.map(x=>"- "+x):["- none"]));
+  L.push("");
+  L.push("Questions that would settle the result");
+  L.push(...(R.settle.length?R.settle.map(r=>`- Q${r.q.n} ${r.q.short}: ${whySettle(r)}`):["- none"]));
+  L.push("");
+  L.push("All answers");
+  QUESTIONS.forEach(q=>L.push(`Q${q.n} ${q.short}: ${ansOf(q.id)}`));
+  return L.join("\n");
+}
+
+function say(msg){
+  const s=$("status");
+  s.textContent=msg;
+  if(msg)setTimeout(()=>{if(s.textContent===msg)s.textContent=""},3000);
+}
+
+async function copy(text,done){
+  $("copy-box").hidden=true;
+  try{
+    await navigator.clipboard.writeText(text);
+    say(done);
+  }catch(e){
+    // Copying can be refused; show the text selected so it can be copied by hand.
+    const t=$("copy-text");
+    t.value=text;
+    $("copy-box").hidden=false;
+    t.focus();t.select();
+    say("");
+  }
+}
+
+/* ---------- Start ---------- */
+
+build();
+const form=$("form");
+form.addEventListener("change",onChange);
+form.addEventListener("input",e=>{if(e.target.dataset.other!==undefined)onChange(e)});
+form.addEventListener("submit",e=>e.preventDefault());
+$("submit-bar").addEventListener("click",submit);
+$("submit-end").addEventListener("click",submit);
+$("clear").addEventListener("click",()=>{$("clear-ask").hidden=false;$("clear-no").focus()});
+$("clear-no").addEventListener("click",()=>{$("clear-ask").hidden=true;$("clear").focus()});
+$("clear-yes").addEventListener("click",clearAll);
+// The same in the bar: the buttons give way to the question until it is answered.
+function barAsk(on){$("bar-main").hidden=on;$("bar-ask").hidden=!on}
+$("clear-bar").addEventListener("click",()=>{barAsk(true);$("clear-bar-no").focus()});
+$("clear-bar-no").addEventListener("click",()=>{barAsk(false);$("clear-bar").focus()});
+$("clear-bar-yes").addEventListener("click",clearAll);
+$("ex-fill").addEventListener("click",()=>{
+  const now=readAll();
+  if(Object.keys(now).length&&!isExample(now)){$("ex-ask").hidden=false;$("ex-no").focus()}
+  else fillExample();
+});
+$("ex-no").addEventListener("click",()=>{$("ex-ask").hidden=true;$("ex-fill").focus()});
+$("ex-yes").addEventListener("click",fillExample);
+$("change").addEventListener("click",()=>{show("form");window.scrollTo(0,0)});
+$("settle").addEventListener("click",e=>{
+  const a=e.target.closest("[data-go]");
+  if(!a)return;
+  e.preventDefault();
+  goTo(a.dataset.go);
+});
+$("copy-summary").addEventListener("click",()=>copy(summaryText(),"Result copied as text."));
+$("copy-rows").addEventListener("click",()=>copy(spreadsheetRows(),"Rows copied. Paste them into the first cell of an empty sheet."));
+
+// Answers come back from a draft kept in this browser, or from the page's own state on an update.
+function start(data){
+  let h=data&&data.h, v=data&&data.view, restored=false;
+  if(!h){h=load(KEY);v=load(KEY_VIEW);restored=!!h}
+  const d=decode(h||"").ans;
+  fill(d);
+  const now=refresh();
+  if(restored&&Object.keys(d).length)$("restored").hidden=false;
+  if(v==="result"&&QUESTIONS.every(q=>isAnswered(q,now[q.id]))){renderResult(now);show("result")}
+  else show("form");
+}
+
+const hot=window.claude&&window.claude.hot;
+if(hot&&typeof hot.snapshot==="function")hot.snapshot(()=>({h:encode(readAll()),view:view}));
+if(hot&&typeof hot.ready==="function")hot.ready(start);
+else start((hot&&hot.data)||{});
+})();
+</script>
+</body>
+</html>

@@ -166,6 +166,13 @@ footer p{margin:0 0 .6rem}
 .mixed ul{margin:.3rem 0 0;padding-left:1.1rem;max-width:72ch}
 .mixed li{margin:0 0 .4rem}
 .lead .ex{font-size:13px;color:var(--muted);margin:0}
+.exh{font-size:13px;color:var(--muted);margin:.5rem 0 .2rem}
+.exl{margin:0;padding-left:1.1rem;font-size:14px;max-width:70ch}
+.exl li{margin:0 0 .4rem}
+.match{display:block;font-size:13px;color:var(--accent)}
+.ranks .exl{list-style:disc;padding-left:1.1rem;margin:0}
+.ranks .exl li{display:list-item;padding:0;border-top:none;margin:0 0 .4rem}
+.ranks .exl li b{font-weight:500}
 .ranks li{grid-template-columns:26px 1fr}
 td.code{white-space:nowrap;font-variant-numeric:tabular-nums}
 </style>
@@ -617,21 +624,61 @@ const QUESTIONS = [
 ];
 // END GENERATED
 
-// The four management approaches, defined on the two axes alone (tbl-approaches).
+// The four management approaches, defined on the two axes alone (tbl-approaches), with the
+// examples reported for each (tbl-examples in Step 5). Each example says what it offers, and
+// lists the describing answers that correspond to it: "any" of the conditions, or "all" of them.
+// These answers do not change the ranking; they show which examples share characteristics with the project.
 const APPROACHES = [
  {id: "ci", g: -1, a: -1,
   desc: "A management approach for a data ecosystem whose actors are units of one organization. A central unit holds the decision-making authority over the shared data, and the units transfer control over the data they share to it.",
-  examples: "data warehouse, data lake, lakehouse, data fabric"},
+  examples: "data warehouse, data lake, lakehouse, data fabric",
+  items: [
+   {name: "Data warehouse", offers: "structured data, transformed before it is loaded",
+    need: "any", when: [{q: "q2", any: ["Processed data", "Modified data"]}]},
+   {name: "Data lake", offers: "raw data of any structure, taken in quickly and structured only when it is used",
+    need: "any", when: [{q: "q2", any: ["Raw data"]}]},
+   {name: "Lakehouse", offers: "raw and processed data in one place, for analysis as well as data science and machine learning",
+    need: "all", when: [{q: "q2", any: ["Raw data"]}, {q: "q2", any: ["Processed data", "Modified data"]}]},
+   {name: "Data fabric", offers: "integrates data from different kinds of sources and delivers it in real time",
+    need: "any", when: [{q: "q5", any: ["(near) Real time"]}, {q: "q15", any: ["Hybrid", "Distributed"]}]}]},
  {id: "ce", g: -1, a: 1,
   desc: "A management approach for a data ecosystem whose actors are separate organizations. A single party, the operator of the platform, holds the decision-making authority over the shared data, and the participating organizations transfer control over the data they share to it.",
-  examples: "a data platform run by a single operator"},
+  examples: "a data platform run by a single operator",
+  items: [
+   {name: "Data platform run by a single operator", offers: "brings the data together in one location, giving one unified view of it for analysis and management",
+    need: "any", when: [{q: "q14", any: ["Platform based"]}, {q: "q15", any: ["Centralized"]}]}]},
  {id: "fi", g: 1, a: -1,
   desc: "A management approach for a data ecosystem whose actors are units of one organization. Each unit holds the decision-making authority over the data it provides and keeps control over that data once it is shared, within rules and standards the units set themselves.",
-  examples: "data mesh"},
+  examples: "data mesh",
+  items: [
+   {name: "Data mesh", offers: "each domain manages its own data and provides it to the others as data products",
+    need: "any", when: [{q: "q15", any: ["Distributed"]}, {q: "q19", any: ["Many-to-many"]}]}]},
  {id: "fe", g: 1, a: 1,
   desc: "A management approach for a data ecosystem whose actors are separate organizations. Each organization holds the decision-making authority over the data it provides and keeps control over that data once it is shared, through usage policies, within rules and standards the participants set themselves.",
-  examples: "data spaces such as Catena-X or SCSN"}
+  examples: "data spaces such as Catena-X or SCSN",
+  items: [
+   {name: "Data space, such as Catena-X or SCSN", offers: "the data stays with its owners and is reached through agreed standards, for secure and sovereign data sharing between organizations",
+    need: "any", when: [{q: "q15", any: ["Distributed"]}, {q: "q16", any: ["Semantic interoperability", "Technical interoperability"]}, {q: "q17", any: ["Agreement based"]}]}]}
 ];
+
+// The describing answers of the respondent that correspond to an example: [{q, labels}], or [].
+function exampleMatches(item, ans) {
+  const hits = item.when.map(c => {
+    const q = questionById(c.q), a = ans[c.q];
+    if (!a) return null;
+    const labels = a.sel.map(i => view(q).opts[i].label).filter(l => c.any.indexOf(l) >= 0);
+    return labels.length ? {q: q, labels: labels} : null;
+  });
+  if (item.need === "all" && hits.some(h => !h)) return [];
+  // merge conditions on the same question
+  const out = [];
+  hits.filter(Boolean).forEach(h => {
+    const prev = out.find(o => o.q === h.q);
+    if (prev) h.labels.forEach(l => { if (prev.labels.indexOf(l) < 0) prev.labels.push(l); });
+    else out.push({q: h.q, labels: h.labels.slice()});
+  });
+  return out;
+}
 
 // Plain wording of Step 5 for the two axes.
 const AREA = {"-1": "within one organization", "1": "across organizations"};
@@ -796,7 +843,7 @@ const API = {NS: NS, BLOCKS: BLOCKS, QUESTIONS: QUESTIONS, APPROACHES: APPROACHE
   GOV_SHORT: GOV_SHORT, EPS: EPS, MAX_OTHER: MAX_OTHER, questionById: questionById, blockById: blockById,
   sign: sign, cap: cap, approachName: approachName, variantOf: variantOf, view: view, isAnswered: isAnswered,
   askedQuestions: askedQuestions, answerText: answerText, encode: encode, decode: decode, reading: reading,
-  ranking: ranking, evaluate: evaluate};
+  ranking: ranking, evaluate: evaluate, exampleMatches: exampleMatches};
 
 if (typeof module !== "undefined" && module.exports) module.exports = API;
 else root.QM = API;
@@ -805,7 +852,7 @@ else root.QM = API;
 
 <script>
 (function(){
-const {BLOCKS,QUESTIONS,APPROACHES,AREA,GOV,GOV_SHORT,MAX_OTHER,encode,decode,isAnswered,evaluate,answerText,questionById,reading,view,variantOf,askedQuestions,sign,cap,approachName}=QM;
+const {BLOCKS,QUESTIONS,APPROACHES,AREA,GOV,GOV_SHORT,MAX_OTHER,encode,decode,isAnswered,evaluate,answerText,questionById,reading,view,variantOf,askedQuestions,sign,cap,approachName,exampleMatches}=QM;
 const KEY="ecosystem-questionnaire-draft-v2";
 const KEY_VIEW="ecosystem-questionnaire-view";
 const $=id=>document.getElementById(id);
@@ -1107,9 +1154,21 @@ function leadHTML(k){
   const head=headOf(k)||"Ranked first for your project";
   return `<div class="lead"><p class="step">${esc(head)}</p><h2>${esc(approachName(c))}</h2>`+
     `<p class="desc">${esc(cap(AREA[c.a]))}: ${esc(GOV[c.g])}.</p>`+
-    `<p class="ex">Examples in the literature: ${esc(c.examples)}.</p>`+
+    examplesHTML(c)+
     `<details><summary>What this approach means</summary><p>${esc(c.desc)}</p></details></div>`;
 }
+// The examples of an approach, each with what it offers and the describing answers that correspond to it.
+function examplesHTML(c){
+  const head=c.place===1
+    ?"Based on this placement, you might want to investigate these approaches further. Examples in the literature:"
+    :"Examples in the literature:";
+  return `<p class="exh">${head}</p><ul class="exl">`+c.items.map(it=>{
+    const m=exampleMatches(it,ans);
+    const match=m.length?`<span class="match">&#10003; Matches your answers: ${m.map(x=>`Q${x.q.n} `+x.labels.map(quoted).join(" and ")).join(", ")}</span>`:"";
+    return `<li><b>${esc(it.name)}</b>: ${esc(it.offers)}.${match}</li>`;
+  }).join("")+`</ul>`;
+}
+
 
 function rankHTML(k){
   const head=headOf(k)?`<h3>${esc(headOf(k))}</h3>`:"";
@@ -1117,7 +1176,7 @@ function rankHTML(k){
     `<li><span class="p">${c.place}</span><div>`+
     `<p class="nm">${esc(approachName(c))}</p>`+
     `<p class="rs">${reason(c,k)}</p>`+
-    `<details><summary>What this approach means</summary><p>${esc(c.desc)} Examples in the literature: ${esc(c.examples)}.</p></details></div></li>`).join("")+`</ol></div>`;
+    `<details><summary>What this approach means</summary><p>${esc(c.desc)}</p>${examplesHTML(c)}</details></div></li>`).join("")+`</ol></div>`;
 }
 
 function openNote(){
@@ -1274,6 +1333,11 @@ function summaryText(){
     k.r.forEach(c=>{
       L.push(`${c.place}. ${approachName(c)} (examples in the literature: ${c.examples})`);
       L.push("   "+plain(reason(c,k)));
+    });
+    L.push("Based on this placement, you might want to investigate these approaches further. Examples in the literature:");
+    k.r[0].items.forEach(it=>{
+      const m=exampleMatches(it,ans);
+      L.push(`- ${it.name}: ${it.offers}.`+(m.length?` Matches your answers: ${m.map(x=>`Q${x.q.n} `+x.labels.map(l=>"\""+l+"\"").join(" and ")).join(", ")}.`:""));
     });
     L.push("");
   });

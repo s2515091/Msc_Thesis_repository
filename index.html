@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questions of the method</title>
+<meta name="description" content="The 23 questions of the method for choosing a data ecosystem archetype, as an enterprise architect answers them.">
+<style>
+:root{
+  --bg:#FFFFFF; --soft:#F5F7FA; --ink:#1F2933; --muted:#5B6775; --line:#DDE2E8;
+  --accent:#1D4E89; --decides-bg:#EAF1F9; --decides-ink:#163D6B;
+  --fallback-bg:#FFF4E5; --fallback-ink:#8A4B0F; --describes-bg:#F0F2F4; --describes-ink:#4A5562;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#14181D; --soft:#1C2229; --ink:#E4E8EC; --muted:#A3AEBA; --line:#2E3742;
+    --accent:#8DB8EA; --decides-bg:#1D3350; --decides-ink:#C9DEF6;
+    --fallback-bg:#3D2C14; --fallback-ink:#F3D2A6; --describes-bg:#262D35; --describes-ink:#C2CAD3;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;padding:2rem 16px 4rem;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6}
+.wrap{max-width:780px;margin:0 auto}
+h1{font-size:28px;line-height:1.25;margin:0 0 .8rem}
+h2{font-size:20px;margin:2.5rem 0 .4rem;padding-top:1rem;border-top:1px solid var(--line)}
+h3{font-size:16px;font-weight:600;margin:.35rem 0 .3rem}
+p{margin:0 0 .7rem}
+.lede{color:var(--muted);max-width:68ch}
+.instruction{background:var(--soft);border-left:4px solid var(--accent);padding:.8rem 1rem;margin:1.2rem 0}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0 0;padding:0;list-style:none}
+.intro{color:var(--muted)}
+.note{font-size:14px;font-style:italic;color:var(--muted);margin-bottom:.4rem}
+.q{border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem;margin:1rem 0;background:var(--bg)}
+.qhead{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
+.num{font-weight:700;color:var(--accent)}
+.tag{font-size:13px;line-height:1.3;padding:.15rem .5rem;border-radius:999px}
+.tag.decides{background:var(--decides-bg);color:var(--decides-ink)}
+.tag.fallback{background:var(--fallback-bg);color:var(--fallback-ink)}
+.tag.describes{background:var(--describes-bg);color:var(--describes-ink)}
+.meta{font-size:14px;color:var(--muted);margin:0 0 .3rem}
+ul{margin:.3rem 0 0;padding-left:1.2rem}
+li{margin:.25rem 0}
+.opt{font-weight:600}
+.ex{color:var(--muted)}
+.unsure{color:var(--muted);list-style:circle}
+footer{margin-top:3rem;font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Questions of the method</h1>
+<p class="lede">These are the 23 questions of the method, in the order and wording in which an enterprise architect answers them about their own project. The questions are grouped in five sections. The section on the organizations is shown in one of two versions, depending on the answer to Q7; both versions are given below. Every question ends with the option “I am not sure / not decided yet”, which counts as unanswered.</p>
+<p class="instruction"><strong>Instruction shown to the architect.</strong> Answer for the project as it has been agreed today: what is already running, and what has been agreed but not yet built. Do not answer for ideas that have not been agreed; choose "I am not sure / not decided yet" instead.</p>
+<section class="block">
+<h2>Data</h2>
+<p class="intro">This section is about the data itself. What the data is, what state it is in when it leaves your side, where it came from, how sensitive it is, and how often it has to be refreshed all put limits on how it can be shared and on what has to be arranged around it. Answer for the data in this specific project rather than for your organization as a whole.</p>
+<article class="q" id="q1"><div class="qhead"><span class="num">Q1</span></div><h3>Which of the following categories describe the data the project shares, or will share?</h3><p class="meta">Several answers possible, with a free-text "Other" option</p><ul><li><span class="opt">Process data</span>: data from organizational processes, research or development <span class="ex">(for example, production line logs, maintenance records, R&amp;D test results)</span></li>
+<li><span class="opt">Product data</span>: data from smart products or sensors, sometimes called Big Data <span class="ex">(for example, vibration readings from a pump, GPS traces from a truck fleet, machine telemetry)</span></li>
+<li><span class="opt">Environment data</span>: data about the surroundings <span class="ex">(for example, weather forecasts, air quality readings, soil or terrain maps)</span></li>
+<li><span class="opt">Customer data</span>: data specifically about customers <span class="ex">(for example, order history, contact details, subscription or usage behaviour)</span></li>
+<li><span class="opt">Metadata</span>: data that describes another dataset <span class="ex">(for example, a data catalogue entry, column definitions, the owner and timestamp of a file)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q2"><div class="qhead"><span class="num">Q2</span></div><h3>In which state is the data at the moment it is shared?</h3><p class="meta">Several answers possible, with a free-text "Other" option</p><ul><li><span class="opt">Raw data</span>: exactly as received from the source <span class="ex">(for example, unfiltered sensor readings, untouched machine log files)</span></li>
+<li><span class="opt">Modified data</span>: data that has been preprocessed <span class="ex">(for example, duplicates removed, missing values filled in, units standardized, labels added)</span></li>
+<li><span class="opt">Enriched data</span>: the original data plus extra information from outside the original source <span class="ex">(for example, sales figures combined with regional demographics, sensor readings joined with weather data)</span></li>
+<li><span class="opt">Processed data</span>: data ready to be analysed by algorithms or ML models <span class="ex">(for example, a cleaned feature table, a pre-aggregated dataset)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q3"><div class="qhead"><span class="num">Q3</span></div><h3>From which sources does the shared data originate?</h3><p class="meta">Several answers possible</p><ul><li><span class="opt">Generated data</span>: generated by our own operations, sensors and equipment <span class="ex">(for example, our own production line, our own machines and vehicles)</span></li>
+<li><span class="opt">Acquired data</span>: obtained from data generated by other organizations <span class="ex">(for example, bought from a data provider, received from a supplier under an agreement)</span></li>
+<li><span class="opt">Customer provided data</span>: collected directly from our own customers <span class="ex">(for example, forms customers fill in, survey answers, app usage)</span></li>
+<li><span class="opt">Freely available data</span>: data that is openly published and can be used without an agreement <span class="ex">(for example, open government datasets, public weather or map data)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q4"><div class="qhead"><span class="num">Q4</span></div><h3>Which level of privacy does the data require?</h3><p class="meta">One answer</p><ul><li><span class="opt">Public data</span>: no restrictions apply, and the data may be shared without restriction <span class="ex">(for example, published open datasets, public timetables, published environmental readings)</span></li>
+<li><span class="opt">Internal data</span>: the data can be shared within the domain, but requires restrictions when shared outside the domain <span class="ex">(for example, internal performance reports, team dashboards)</span></li>
+<li><span class="opt">Confidential data</span>: as internal data, but more strongly restricted: only authorized personnel may access it <span class="ex">(for example, contract terms, pricing, unreleased product designs)</span></li>
+<li><span class="opt">Sensitive data</span>: the data contains personally identifiable information, so sharing it requires legal compliance, such as anonymization or pseudonymization <span class="ex">(for example, employee records, patient data, customer personal data under GDPR)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q5"><div class="qhead"><span class="num">Q5</span></div><h3>How frequently does the data have to be updated once it is shared?</h3><p class="meta">Several answers possible</p><ul><li><span class="opt">Static</span>: no updates are required after sharing <span class="ex">(for example, a one-off historical export, a fixed reference table)</span></li>
+<li><span class="opt">Up to date</span>: repeated updates on a schedule <span class="ex">(for example, a daily or weekly batch upload)</span></li>
+<li><span class="opt">(near) Real time</span>: a live stream or continuous feed <span class="ex">(for example, sensor telemetry pushed the moment it is measured)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+</section>
+<section class="block">
+<h2>Organization</h2>
+<p class="intro">This section is about why the data is shared and with whom: what the organization seeks from the exchange, which parties take part in it, and what is given or received in return. Answer for this specific project rather than for your organization as a whole.</p>
+<article class="q" id="q6"><div class="qhead"><span class="num">Q6</span></div><h3>What motivates the sharing of this data?</h3><p class="meta">Several answers possible, with a free-text "Other" option</p><ul><li><span class="opt">Economic</span>: money or efficiency <span class="ex">(for example, new revenue from selling data, cost savings, better forecasting)</span></li>
+<li><span class="opt">Social and environmental</span>: to contribute to social or environmental goals <span class="ex">(for example, sustainability reporting, emissions tracking, corporate social responsibility programmes)</span></li>
+<li><span class="opt">Legal</span>: legislation or a regulator requires the data to be shared <span class="ex">(for example, GDPR obligations, EU Data Act, regulator or safety reporting)</span></li>
+<li><span class="opt">Cultural</span>: to improve the culture around data sharing within the organization <span class="ex">(for example, breaking down silos between departments, building trust in shared data)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q7"><div class="qhead"><span class="num">Q7</span></div><h3>With whom is the data shared, or to be shared?</h3><p class="meta">One answer</p><ul><li><span class="opt">Intra-organizational</span>: the data stays inside our own organization <span class="ex">(for example, between our production, sales, and logistics departments)</span></li>
+<li><span class="opt">Same industry</span>: only with organizations in the same industry <span class="ex">(for example, a supplier sharing operational data with a manufacturer)</span></li>
+<li><span class="opt">Cross-industry</span>: across sector boundaries <span class="ex">(for example, sharing meteorology data with agriculture or aerospace companies)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q8"><div class="qhead"><span class="num">Q8</span></div><h3>What does your organization expect in return for sharing the data?</h3><p class="meta">Several answers possible, with a free-text "Other" option</p><ul><li><span class="opt">Financial reward</span>: a monetary return <span class="ex">(for example, a licence fee, a price per dataset)</span></li>
+<li><span class="opt">Virtual assets</span>: digital assets that cannot be directly converted into cash <span class="ex">(for example, platform credits, tokens, points)</span></li>
+<li><span class="opt">Data in return</span>: data is received in exchange for the data shared <span class="ex">(for example, we share production data, the partner shares market data)</span></li>
+<li><span class="opt">Services</span>: additional or new services from the receiving party <span class="ex">(for example, a free analytics dashboard, a maintenance or benchmarking service)</span></li>
+<li><span class="opt">(Increased) Reputation</span>: greater brand awareness, trust, or credibility <span class="ex">(for example, recognized as a trusted partner, publicity as a frontrunner in the sector)</span></li>
+<li><span class="opt">Nothing in return</span>: no return is expected <span class="ex">(for example, the data is shared because a regulator requires it, or it is published openly)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q9"><div class="qhead"><span class="num">Q9</span></div><h3>Which form of compensation is expected for the data?</h3><p class="meta">One answer</p><ul><li><span class="opt">Free</span>: the data is shared free of charge <span class="ex">(for example, internal sharing between departments, open data, legally mandated reporting)</span></li>
+<li><span class="opt">Fixed</span>: a single, fixed price, paid at once or in instalments <span class="ex">(for example, EUR 5,000 for a dataset)</span></li>
+<li><span class="opt">Subscription based</span>: a recurring price every set period <span class="ex">(for example, a monthly or yearly access fee)</span></li>
+<li><span class="opt">Usage based</span>: the compensation varies with how much the data is used <span class="ex">(for example, a price per API call, per record downloaded)</span></li>
+<li><span class="opt">Revenue based</span>: compensation based on the revenue generated from the shared data <span class="ex">(for example, 8% of the revenue generated from the data, or royalties)</span></li>
+<li><span class="opt">Hybrid</span>: a combination of the models mentioned above <span class="ex">(for example, a base subscription plus a charge per API call)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+</section>
+<section class="block">
+<h2>The Organization (Contingency Factors, Within One Organization)</h2>
+<p class="note">Shown when Q7 is answered “Intra-organizational” or “I am not sure / not decided yet”.</p>
+<p class="intro">This section is about the organization in which the project runs: what it emphasizes, how centralized it is, how far its processes are harmonized, and how regulated its market is. Answer for the organization, or for the part of it that the project spans.</p>
+<article class="q" id="q10"><div class="qhead"><span class="num">Q10</span></div><h3>Which performance objective does the organization emphasize most?</h3><p class="meta">One answer</p><ul><li><span class="opt">Profit</span>: earning more from the current business, mainly by keeping costs down <span class="ex">(for example, margin targets, cost-reduction programmes)</span></li>
+<li><span class="opt">Asset utilization</span>: getting more out of what the organization already owns <span class="ex">(for example, using plants, vehicles, or systems more fully)</span></li>
+<li><span class="opt">Growth</span>: expanding into new products, markets, or customers <span class="ex">(for example, revenue growth targets, new business lines)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q11"><div class="qhead"><span class="num">Q11</span></div><h3>How centralized is the organization, or the part of it that the project spans?</h3><p class="meta">One answer</p><ul><li><span class="opt">Centralized</span>: most decisions are taken at the top <span class="ex">(for example, headquarters sets budgets, priorities, and policies for all units)</span></li>
+<li><span class="opt">Decentralized</span>: the business units or regions decide largely for themselves <span class="ex">(for example, each division runs its own budget and priorities)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q12"><div class="qhead"><span class="num">Q12</span></div><h3>How harmonized are the business processes that the shared data supports, across the parts of the organization?</h3><p class="meta">One answer</p><ul><li><span class="opt">Globally harmonized</span>: the units follow the same processes <span class="ex">(for example, one order-to-cash process for all countries)</span></li>
+<li><span class="opt">Local processes</span>: each unit follows its own processes <span class="ex">(for example, country-specific sales or registration procedures)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q13"><div class="qhead"><span class="num">Q13</span></div><h3>How regulated is the market in which the organization operates?</h3><p class="meta">One answer</p><ul><li><span class="opt">Highly regulated</span>: the products, processes, or data are subject to extensive sector regulation and reporting <span class="ex">(for example, pharmaceuticals, chemicals, banking, energy)</span></li>
+<li><span class="opt">Little or no regulation</span>: little or no sector-specific regulation applies beyond general law such as data protection <span class="ex">(for example, consulting, software development, non-food retail)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+</section>
+<section class="block">
+<h2>The Participating Organizations (Contingency Factors, Across Organizations)</h2>
+<p class="note">Shown instead when Q7 is answered “Same industry” or “Cross-industry”.</p>
+<p class="intro">This section is about the participating organizations taken together: what the collaboration aims at, how the collaboration is led, how far the participants' processes are harmonized, and how regulated their markets are.</p>
+<article class="q" id="q10-across"><div class="qhead"><span class="num">Q10</span></div><h3>What do the participating organizations mainly aim for with the collaboration?</h3><p class="meta">One answer</p><ul><li><span class="opt">Profit</span>: lowering the cost of what the participants already do <span class="ex">(for example, fewer manual document exchanges along a supply chain)</span></li>
+<li><span class="opt">Asset utilization</span>: using capacity the participants already have more fully <span class="ex">(for example, shared berths, trucks, or warehouse space)</span></li>
+<li><span class="opt">Growth</span>: new services or markets the participants could not reach alone <span class="ex">(for example, a new service built on the combined data)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q11-across"><div class="qhead"><span class="num">Q11</span></div><h3>Apart from the shared data, how is the business collaboration between the participating organizations led?</h3><p class="meta">One answer</p><ul><li><span class="opt">Centralized</span>: one organization leads the collaboration <span class="ex">(for example, a manufacturer and its suppliers, a port authority and the companies in its port)</span></li>
+<li><span class="opt">Decentralized</span>: no organization leads, and the participants take part on an equal footing <span class="ex">(for example, an association of companies of similar standing)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q12-across"><div class="qhead"><span class="num">Q12</span></div><h3>How harmonized are the business processes that the shared data supports, across the participating organizations?</h3><p class="meta">One answer</p><ul><li><span class="opt">Globally harmonized</span>: the participants follow the same processes <span class="ex">(for example, an agreed industry procedure for booking, ordering, or customs clearance)</span></li>
+<li><span class="opt">Local processes</span>: each organization follows its own processes, and only the exchange between them is aligned <span class="ex">(for example, each partner plans its own operations and sends the agreed messages)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q13-across"><div class="qhead"><span class="num">Q13</span></div><h3>How regulated are the markets in which the participating organizations operate? If they differ, answer for the most regulated one.</h3><p class="meta">One answer</p><ul><li><span class="opt">Highly regulated</span>: the products, processes, or data are subject to extensive sector regulation and reporting <span class="ex">(for example, pharmaceuticals, chemicals, banking, energy)</span></li>
+<li><span class="opt">Little or no regulation</span>: little or no sector-specific regulation applies beyond general law such as data protection <span class="ex">(for example, consulting, software development, non-food retail)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+</section>
+<section class="block">
+<h2>Network</h2>
+<p class="intro">This section is about how the exchange works in practice: the route the data takes between the parties, where the data sits once it is shared, what has to line up on both sides for it to be understood, how access is regulated, what sets an exchange off, and how many parties are involved.</p>
+<article class="q" id="q14"><div class="qhead"><span class="num">Q14</span></div><h3>By which route is the data exchanged between the parties?</h3><p class="meta">One answer, with a free-text "Other" option</p><ul><li><span class="opt">Peer to peer</span>: the data passes directly from one party to the other, with no intermediary <span class="ex">(for example, our system calls theirs directly, or they call an API we run ourselves)</span></li>
+<li><span class="opt">Platform based</span>: the exchange happens through the intermediation of a platform <span class="ex">(for example, a shared portal, or a broker that sits between provider and consumer)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q15"><div class="qhead"><span class="num">Q15</span></div><h3>Where does the data reside when it is shared?</h3><p class="meta">One answer</p><ul><li><span class="opt">Centralized</span>: copied into one shared location, from which consumers retrieve it <span class="ex">(for example, all departments load their data into one shared database that others query)</span></li>
+<li><span class="opt">Distributed</span>: the data stays where it is produced and is accessed at the source through an agreed interface <span class="ex">(for example, each domain or organization exposes its own data through a connector or API; nothing is duplicated centrally)</span></li>
+<li><span class="opt">Hybrid</span>: some data is copied into a central store, other data stays at the source and is accessed there.</li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q16"><div class="qhead"><span class="num">Q16</span></div><h3>Which levels of interoperability does the exchange require between the parties?</h3><p class="meta">Several answers possible</p><ul><li><span class="opt">Legal interoperability</span>: compatible legal frameworks, standards, and regulations <span class="ex">(for example, matching contract clauses, GDPR-compliant terms, agreed usage policies)</span></li>
+<li><span class="opt">Organizational interoperability</span>: a shared understanding of processes, objectives, and resources <span class="ex">(for example, agreed roles, responsibilities, and escalation paths between the parties)</span></li>
+<li><span class="opt">Semantic interoperability</span>: consistency and interpretability across diverse sources and systems <span class="ex">(for example, a shared vocabulary or ontology, so that “customer” or “downtime” means the same thing on both sides)</span></li>
+<li><span class="opt">Technical interoperability</span>: the same technical data exchange across systems <span class="ex">(for example, matching formats and protocols, JSON over REST, OPC UA, agreed schemas)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q17"><div class="qhead"><span class="num">Q17</span></div><h3>On what basis is access to the data granted?</h3><p class="meta">One answer</p><ul><li><span class="opt">Agreement based</span>: access terms are defined between you and the other party <span class="ex">(for example, a bilateral data sharing contract, an NDA with data clauses)</span></li>
+<li><span class="opt">Application based</span>: access is tied to the use of a specific application <span class="ex">(for example, only users logged into the shared dashboard can see the data)</span></li>
+<li><span class="opt">Trust based</span>: access is granted on the basis of trust <span class="ex">(for example, known partners are granted access without a formal contract or technical gate)</span></li>
+<li><span class="opt">Open</span>: no access restrictions apply, and anyone may access the data <span class="ex">(for example, published as open data)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q18"><div class="qhead"><span class="num">Q18</span></div><h3>What triggers an exchange of data?</h3><p class="meta">One answer, with a free-text "Other" option</p><ul><li><span class="opt">On demand</span>: sharing is triggered when the consumer asks for the data <span class="ex">(for example, the consumer queries the API when they need it)</span></li>
+<li><span class="opt">Event based</span>: triggered by an event specified by the provider <span class="ex">(for example, end of day, the dataset reaching a certain size, an alarm or threshold being crossed)</span></li>
+<li><span class="opt">Continuous</span>: sharing data in real time or at regular intervals <span class="ex">(for example, a live stream, or an automatic push every 15 minutes)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q19"><div class="qhead"><span class="num">Q19</span></div><h3>Which pattern do the data sharing relationships follow?</h3><p class="meta">One answer</p><ul><li><span class="opt">One-to-one</span>: one party shares data with one other party <span class="ex">(for example, one supplier sends data to one manufacturer)</span></li>
+<li><span class="opt">One-to-many</span>: one party shares data with many other parties <span class="ex">(for example, one provider publishes a dataset that many consumers use)</span></li>
+<li><span class="opt">Many-to-one</span>: many parties share data with one other party <span class="ex">(for example, many suppliers report into one OEM)</span></li>
+<li><span class="opt">Many-to-many</span>: many parties share data with many other parties <span class="ex">(for example, an ecosystem where every participant both provides and consumes)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q20"><div class="qhead"><span class="num">Q20</span></div><h3>How dependent are the parties on one another’s data?</h3><p class="meta">One answer</p><ul><li><span class="opt">Loosely coupled</span>: each party can continue to operate if the data stops arriving <span class="ex">(for example, the shared data improves a forecast, but the process still runs without it)</span></li>
+<li><span class="opt">Tightly coupled</span>: the parties depend on each other’s data to operate <span class="ex">(for example, a production schedule that cannot be made without the partner’s live data)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+</section>
+<section class="block">
+<h2>Governance</h2>
+<p class="intro">This section is about control over the data once it has been shared: who decides what may be done with it afterwards, who holds the authority to set the rules for it and see that they are followed, and how decisions about it are reached. These questions are often still open early in a project; please use the “I am not sure / not decided yet” option rather than guessing.</p>
+<article class="q" id="q21"><div class="qhead"><span class="num">Q21</span></div><h3>Once the data has been shared, can the party that provided it still limit what is done with it?</h3><p class="meta">One answer</p><ul><li><span class="opt">Yes</span>: the provider sets conditions on how the data may be used <span class="ex">(for example, usage policies travel with the data, or the receiver may only use it for an agreed purpose)</span></li>
+<li><span class="opt">No, the receiver decides</span>: whoever receives the data decides how it is used <span class="ex">(for example, the departments hand their data over to a central team, or the participants hand theirs to one company, which then decides what is done with it)</span></li>
+<li><span class="opt">No conditions at all</span>: anyone who receives the data may use it freely <span class="ex">(for example, the data is published as open data, or made available to every department without conditions)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q22"><div class="qhead"><span class="num">Q22</span></div><h3>When a party wants access to the shared data, who decides whether it gets access?</h3><p class="meta">One answer</p><ul><li><span class="opt">Each party, for its own data</span>: each party decides who may access the data it provides, and any common rules are agreed by the parties together <span class="ex">(for example, each domain or organization decides about the data it publishes, and the common standards are agreed in an association in which the parties decide)</span></li>
+<li><span class="opt">One party, for all the data</span>: one party decides for everyone, including about data it did not provide <span class="ex">(for example, a central data office or the company that runs the exchange decides who may access which data, or a data trustee that holds the data of several providers decides)</span></li>
+<li><span class="opt">Each party, within common rules set by someone else</span>: a body that is not one of the parties sets the common rules, and each party decides within them who may access its own data <span class="ex">(for example, headquarters sets the data definitions and quality rules for all units, and each unit decides who may use its data)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+<article class="q" id="q23"><div class="qhead"><span class="num">Q23</span></div><h3>How are decisions about the shared data reached?</h3><p class="meta">One answer</p><ul><li><span class="opt">Hierarchical</span>: whoever holds the authority decides on their own and passes the decision down <span class="ex">(for example, a manager or a board decides and the teams carry it out)</span></li>
+<li><span class="opt">Cooperative</span>: whoever holds the authority decides together with the others involved <span class="ex">(for example, decisions are taken in working groups or committees in which the parties take part)</span></li>
+<li class="unsure">I am not sure / not decided yet.</li></ul></article>
+</section>
+
+</main>
+</body>
+</html>

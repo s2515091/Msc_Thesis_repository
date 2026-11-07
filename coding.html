@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coding table of the method</title>
+<meta name="description" content="The score of each answer that decides the result of the method for choosing a data ecosystem archetype.">
+<style>
+:root{
+  --bg:#FFFFFF; --soft:#F5F7FA; --ink:#1F2933; --muted:#5B6775; --line:#DDE2E8; --accent:#1D4E89;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#14181D; --soft:#1C2229; --ink:#E4E8EC; --muted:#A3AEBA; --line:#2E3742; --accent:#8DB8EA; }
+}
+*{box-sizing:border-box}
+body{margin:0;padding:2rem 16px 4rem;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto}
+h1{font-size:28px;line-height:1.25;margin:0 0 .8rem}
+h2{font-size:20px;margin:2.5rem 0 .5rem;padding-top:1rem;border-top:1px solid var(--line)}
+p{margin:0 0 .7rem}
+.lede{color:var(--muted);max-width:72ch}
+a{color:var(--accent)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:8px;margin:.6rem 0 1rem}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:.55rem .75rem;border-bottom:1px solid var(--line)}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:none}
+thead th{background:var(--soft);font-weight:600}
+th.num,td.num{text-align:center;white-space:nowrap;width:5.5rem}
+tbody th{font-weight:400}
+.qn{font-weight:700;color:var(--accent);margin-right:.3rem}
+.alt{display:block;font-size:14px;color:var(--muted);margin-top:.2rem}
+.none{color:var(--muted)}
+ol{padding-left:1.3rem}
+</style>
+</head>
+<body>
+<main class="wrap">
+<h1>Coding table of the method</h1>
+<p class="lede">Seven of the 23 questions decide the result. This page gives what each of their answers counts for. The other sixteen questions describe the project and have no score. The answer &ldquo;I am not sure / not decided yet&rdquo; counts as unanswered for every question. The full questions are on the <a href="index.html">questions page</a>.</p>
+
+<h2>Application area</h2>
+<p class="lede">One question decides the application area. Its answers are not scored: each places the project directly in a column of the matrix.</p>
+<div class="scroll">
+<table>
+<thead><tr><th scope="col">Question</th><th scope="col">Answer</th><th scope="col">Application area</th></tr></thead>
+<tbody>
+<tr><th scope="row" rowspan="3"><span class="qn">Q7</span>With whom is the data shared, or to be shared?</th><td>Intra-organizational</td><td>Within one organization</td></tr>
+<tr><td>Same industry</td><td>Across organizations</td></tr>
+<tr><td>Cross-industry</td><td>Across organizations</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Governance mode</h2>
+<p class="lede">Each answer below is scored +1 where it points to the federated (decentralized) pole, &minus;1 where it points to the centralized pole, and 0 where it points to neither. A dash means the question has no middle answer.</p>
+<p class="lede">The average of the scores of Q21 and Q22 decides the governance mode: below zero centralized, above zero federated. Only when that average is zero, or neither question is answered, does the average of Q10 to Q13 decide instead. If that average is also zero, both governance modes stay open.</p>
+<div class="scroll">
+<table>
+<thead><tr><th scope="col">Question</th><th scope="col" class="num">+1 (federated)</th><th scope="col" class="num">0</th><th scope="col" class="num">&minus;1 (centralized)</th></tr></thead>
+<tbody>
+<tr><th scope="row"><span class="qn">Q21</span>Once the data has been shared, can the party that provided it still limit what is done with it?</th><td>Yes</td><td>No conditions at all</td><td>No, the receiver decides</td></tr>
+<tr><th scope="row"><span class="qn">Q22</span>When a party wants access to the shared data, who decides whether it gets access?</th><td>Each party, for its own data</td><td>Each party, within common rules set by someone else</td><td>One party, for all the data</td></tr>
+</tbody>
+</table>
+</div>
+
+<p class="lede">Q10 to Q13 ask about the organizations taking part. They are shown in one of two versions, about one organization or about the participating organizations, depending on the answer to Q7; the answers and their scores are the same in both.</p>
+<div class="scroll">
+<table>
+<thead><tr><th scope="col">Question</th><th scope="col" class="num">+1 (federated)</th><th scope="col" class="num">0</th><th scope="col" class="num">&minus;1 (centralized)</th></tr></thead>
+<tbody>
+<tr><th scope="row"><span class="qn">Q10</span>Which performance objective does the organization emphasize most?<span class="alt">Across organizations: What do the participating organizations mainly aim for with the collaboration?</span></th><td>Growth</td><td>Asset utilization</td><td>Profit</td></tr>
+<tr><th scope="row"><span class="qn">Q11</span>How centralized is the organization, or the part of it that the project spans?<span class="alt">Across organizations: Apart from the shared data, how is the business collaboration between the participating organizations led?</span></th><td>Decentralized</td><td class="none">&ndash;</td><td>Centralized</td></tr>
+<tr><th scope="row"><span class="qn">Q12</span>How harmonized are the business processes that the shared data supports, across the parts of the organization?<span class="alt">Across organizations: How harmonized are the business processes that the shared data supports, across the participating organizations?</span></th><td>Local processes</td><td class="none">&ndash;</td><td>Globally harmonized</td></tr>
+<tr><th scope="row"><span class="qn">Q13</span>How regulated is the market in which the organization operates?<span class="alt">Across organizations: How regulated are the markets in which the participating organizations operate? If they differ, answer for the most regulated one.</span></th><td>Little or no regulation</td><td class="none">&ndash;</td><td>Highly regulated</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Ranking</h2>
+<p class="lede">From the position on the two axes, the four data ecosystem archetypes are ranked:</p>
+<ol>
+<li>the archetype with the project&rsquo;s application area and governance mode;</li>
+<li>the same application area, the other governance mode;</li>
+<li>the other application area, the same governance mode;</li>
+<li>the other application area, the other governance mode.</li>
+</ol>
+<p class="lede">If the application area or the governance mode stays open, one ranking is shown for each possibility.</p>
+</main>
+</body>
+</html>
